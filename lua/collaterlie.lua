@@ -1,47 +1,75 @@
 local p = require('collaterlie_palette')
 
 local function hi(fg, bg, special, specialcol)
-  return { fg = fg, bg = bg, special = special, specialcol = specialcol }
+  local o = { fg = fg, bg = bg, special = special, specialcol = specialcol }
+
+  return o
 end
 
-local scheme = {
-          Normal = hi(p.fg, p.bg, nil, nil), 
-        NormalNC = hi(p.grey.light, p.bg, nil, nil),   -- Normal text in non-current windows
+local fg = {
+  normal = '#432b04',
+  highlight = '#484848',
+  dialogborder = '#7f5107',
+  selected = '#484848',
+  menu = '#532b14',
+  addition = '#0f801e',
+  deletion = '#801010',
+  change = '#7f7f03',
+  diff = '#780f81'
+}
 
-          Cursor = hi(p.grey.black, p.orange.vibrant, nil, nil), -- for the cursor highlights to work, 
-         nCursor = hi(p.grey.black, p.orange.vibrant, nil, nil), -- the highlight group will need to be set for
-         vCursor = hi(p.grey.black, p.orange.dark1, nil, nil),   -- the cursor, e.g.
-         iCursor = hi(p.grey.black, p.blue.vibrant, nil, nil),   -- set guicursor=n:block-nCursor
-         rCursor = hi(p.red.pale, p.red.vibrant, nil, nil), 
-         cCursor = hi(p.grey.black, p.purple.vibrant, nil, nil),
+local bg = {
+  normal = '#fdfdfc',
+  highlight = '#cbff97',
+  cursorline = '#dee1fa',
+  gutter = '#ededed',
+  dialog = '#fffaf6',
+  menu = '#ededed',
+  selected = '#edffdb',
+  addition = '#defbe1',
+  deletion = '#fddddd',
+  change = '#fefedc',
+  diff = '#f9defc'
+}
+
+local scheme = {
+          Normal = hi(fg.normal, bg.normal, nil, nil), 
+        NormalNC = hi(fg.normal, bg.normal, nil, nil),   -- Normal text in non-current windows, will be used as the bckground when a dialog is shown
+
+          Cursor = hi('#000000', '#f1990e', nil, nil), -- for the cursor highlights to work, 
+         nCursor = hi('#000000', '#f1990e', nil, nil), -- the highlight group will need to be set for
+         vCursor = hi('#000000', '#7f5107', nil, nil),   -- the cursor, e.g.
+         iCursor = hi('#000000', '#192ce2', nil, nil),   -- set guicursor=n:block-nCursor
+         rCursor = hi('#fddddd', '#e31c1c', nil, nil), 
+         cCursor = hi('#000000', '#d319e2', nil, nil),
 
         CursorIM = hi(nil, nil, 'bold', nil),      -- for IME mode (inputing multibyte characters)
-    CursorColumn = hi(nil, p.blue.pale, nil, nil),   -- for when cursorcolumn is set
-      CursorLine = hi(nil, p.blue.pale, nil, nil),     -- for when cursorline is set
+    CursorColumn = hi(nil, bg.cursorline, nil, nil),   -- for when cursorcolumn is set
+      CursorLine = hi(nil, bg.cursorline, nil, nil),     -- for when cursorline is set
 
-          LineNr = hi(p.blue.dark1, p.grey.pale, 'italic', nil),
-    CursorLineNr = hi(p.blue.dark2, p.blue.pale, 'bold,italic', nil),
-      SignColumn = hi(p.fg, p.grey.pale, nil, nil),
-  CursorLineSign = hi(p.fg, p.blue.pale, nil, nil), 
+          LineNr = hi('#0e187f', bg.gutter, 'italic', nil),
+    CursorLineNr = hi('#070e44', bg.cursorline, 'bold,italic', nil),
+      SignColumn = hi(fg.normal, bg.gutter, nil, nil),
+  CursorLineSign = hi(fg.normal, bg.cursorline, nil, nil), 
 
-      StatusLine = hi(p.bg, p.orange.dark1, nil, nil),
-    StatusLineNC = hi(p.grey.pale, p.grey.vibrant, nil, nil),
+      StatusLine = hi('#fdfdfc', '#7f5107', nil, nil),
+    StatusLineNC = hi('#ededed', '#818181', nil, nil),
 
-    QuickFixLine = hi(p.fg, p.red.pale, nil, nil),
+    QuickFixLine = hi(fg.normal, '#fddddd', nil, nil),
 
-          WinBar = hi(p.fg, p.bg, nil, nil),
-        WinBarNC = hi(p.fg, p.bg, nil, nil),
-    WinSeparator = hi(p.bg, p.grey.dark1, nil, nil),
+          WinBar = hi(fg.normal, bg.normal, nil, nil),
+        WinBarNC = hi(fg.normal, bg.normal, nil, nil),
+    WinSeparator = hi(bg.normal, '#484848', nil, nil),
 
-         Tabline = hi(p.red.dark1, p.grey.pale, 'italic', nil),
-     TabLineFill = hi(nil, p.grey.pale, nil, nil),
-      TabLineSel = hi(p.red.dark1, p.bg, 'bold,italic', nil),
+         Tabline = hi('#801010', '#ededed', 'italic', nil),
+     TabLineFill = hi(nil, '#ededed', nil, nil),
+      TabLineSel = hi('#801010', bg.normal, 'bold,italic', nil),
 
-      MatchParen = hi(p.grey.dark1, p.blue.light, nil, nil),
+      MatchParen = hi('#484848', '#a1a9f5', nil, nil),
 
-     EndOfBuffer = hi(nil, p.grey.pale, nil, nil),    -- Bottom of screen when scrolled up
-         NonText = hi(p.red.light, p.bg, nil, nil), 
-      Whitespace = hi(p.blue.dark2, p.bg, nil, nil),
+     EndOfBuffer = hi(nil, '#ededed', nil, nil),    -- Bottom of screen when scrolled up
+         NonText = hi('#f4a3a3', bg.normal, nil, nil), 
+      Whitespace = hi('#070e44', bg.normal, nil, nil),
 
           Visual = hi(nil, p.orange.pale, nil, nil),
        VisualNOS = hi(nil, p.grey.pale, nil, nil),  -- for when window does not have focus (X11 only)
@@ -56,9 +84,9 @@ local scheme = {
           Folded = hi(p.orange.dark1, p.yellow.pale, nul, nil),
       FoldColumn = hi(p.orange.dark1, p.yellow.pale, 'bold', nil),
 
-          Search = hi(p.grey.dark2, p.chartreuse.light, nil, nil),
-       CurSearch = hi(p.grey.dark2, p.chartreuse.light, 'bold', nil),
-       IncSearch = hi(p.grey.dark2, p.chartreuse.light, 'bold', nil),
+          Search = hi(fg.highlight, bg.highlight, nil, nil),
+       CurSearch = hi(fg.highlight, bg.highlight, 'bold', nil),
+       IncSearch = hi(fg.highlight, bg.highlight, 'bold', nil),
 
         SpellBad = hi(nil, p.yellow.pale, 'undercurl', p.red.vibrant),
         SpellCap = hi(nil, nil, 'undercurl', p.purple.dark1),
@@ -67,15 +95,15 @@ local scheme = {
 
        Directory = hi(p.blue.vibrant, nil, nil, nil),
 
-         DiffAdd = hi(p.green.dark1, p.green.pale, nil, nil),
-      DiffDelete = hi(p.red.dark1, p.red.pale, nil, nil),
-      DiffChange = hi(p.yellow.dark1, p.yellow.pale, nil, nil),
-        DiffText = hi(p.green.dark1, p.purple.pale, 'underline', p.purple.dark1),
+         DiffAdd = hi(fg.addition, bg.addition, nil, nil),
+      DiffDelete = hi(fg.deletion, bg.deletion, nil, nil),
+      DiffChange = hi(fg.change, bg.change, nil, nil),
+        DiffText = hi(fg.diff, bg.diff, 'underline', fg.diff),
 
       SpecialKey = hi(p.green.dark1, nil, nil, nil),
     
-           Pmenu = hi(p.grey.pale, p.grey.dark1, nil, nil),
-        PmenuSel = hi(p.grey.dark2, p.chartreuse.light, nil, nil),
+           Pmenu = hi(fg.menu, bg.menu, nil, nil),
+        PmenuSel = hi(fg.selected, bg.selected, nil, nil),
     PmenuSelBold = hi(p.grey.dark2, p.chartreuse.light, 'bold', nil),
       PmenuThumb = hi(nil, p.grey.vibrant, nil, nil),
        PmenuSbar = hi(nil, p.grey.light, nil, nil),
@@ -89,9 +117,9 @@ local scheme = {
 
 -- Telescope  ===============================================================================
 
-          TelescopeBorder = hi(p.grey.dark1, p.grey.ghost, nil, nil), 
-          TelescopeNormal =  hi(p.grey.dark2, p.grey.ghost, nil, nil),
-       TelescopeSelection = hi(p.grey.dark2, p.chartreuse.pale, nil, nil),
+          TelescopeBorder = hi(fg.dialogborder, bg.dialog, nil, nil), 
+          TelescopeNormal =  hi(fg.normal, bg.dialog, nil, nil),
+       TelescopeSelection = hi(fg.selected, bg.selected, nil, nil),
   TelescopeSelectionCaret = hi(p.green.dark1, nil, nil, nil),
   TelescopeMultiSelection = hi(p.grey.dark2, p.chartreuse.light, nil, nil),
         TelescopeMatching = hi(p.grey.dark2, p.chartreuse.light, nil, nil),
