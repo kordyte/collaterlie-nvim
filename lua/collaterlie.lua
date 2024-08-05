@@ -15,7 +15,13 @@ local fg = {
   addition = '#0f801e',
   deletion = '#801010',
   change = '#7f7f03',
-  diff = '#780f81'
+  diff = '#780f81',
+  directory = '#192ce2',
+  diagnosticerror = '#e31c1c',
+  diagnosticwarn = '#7f7f03',
+  diagnosticinfo = '#117980',
+  diagnostichint = '#780f81',
+  diagnosticok = '#0f801e'
 }
 
 local bg = {
@@ -29,7 +35,12 @@ local bg = {
   addition = '#defbe1',
   deletion = '#fddddd',
   change = '#fefedc',
-  diff = '#f9defc'
+  diff = '#f9defc',
+  diagnosticerror = '#fddddd',
+  diagnosticwarn = '#fefedc',
+  diagnosticinfo = '#ddfafc',
+  diagnostichint = '#f9defc',
+  diagnosticok = '#defbe1'
 }
 
 local scheme = {
@@ -67,7 +78,7 @@ local scheme = {
 
       MatchParen = hi('#484848', '#a1a9f5', nil, nil),
 
-     EndOfBuffer = hi(nil, '#ededed', nil, nil),    -- Bottom of screen when scrolled up
+     EndOfBuffer = hi(nil, bg.gutter, nil, nil),    -- Bottom of screen when scrolled up
          NonText = hi('#f4a3a3', bg.normal, nil, nil), 
       Whitespace = hi('#070e44', bg.normal, nil, nil),
 
@@ -88,12 +99,12 @@ local scheme = {
        CurSearch = hi(fg.highlight, bg.highlight, 'bold', nil),
        IncSearch = hi(fg.highlight, bg.highlight, 'bold', nil),
 
-        SpellBad = hi(nil, p.yellow.pale, 'undercurl', p.red.vibrant),
-        SpellCap = hi(nil, nil, 'undercurl', p.purple.dark1),
-       SpellRare = hi(nil, nil, 'undercurl', p.grey.light),
-      SpellLocal = hi(nil, p.yellow.pale, 'undercurl', p.purple.vibrant),
+        SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
+        SpellCap = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
+       SpellRare = hi(nil, nil, 'undercurl', fg.diagnostichint),
+      SpellLocal = hi(nil, nil, 'undercurl', fg.diagnostichint),
 
-       Directory = hi(p.blue.vibrant, nil, nil, nil),
+       Directory = hi(fg.directory, nil, nil, nil),
 
          DiffAdd = hi(fg.addition, bg.addition, nil, nil),
       DiffDelete = hi(fg.deletion, bg.deletion, nil, nil),
@@ -120,9 +131,78 @@ local scheme = {
           TelescopeBorder = hi(fg.dialogborder, bg.dialog, nil, nil), 
           TelescopeNormal =  hi(fg.normal, bg.dialog, nil, nil),
        TelescopeSelection = hi(fg.selected, bg.selected, nil, nil),
-  TelescopeSelectionCaret = hi(p.green.dark1, nil, nil, nil),
-  TelescopeMultiSelection = hi(p.grey.dark2, p.chartreuse.light, nil, nil),
-        TelescopeMatching = hi(p.grey.dark2, p.chartreuse.light, nil, nil),
+  TelescopeSelectionCaret = hi(fg.normal, bg.selected, nil, nil),
+  TelescopeMultiSelection = hi(fg.highlight, bg.highlight, nil, nil),
+        TelescopeMatching = hi(fg.highlight, bg.highlight, nil, nil),
+
+-- ================== Diagnostic =========================
+
+         DiagnosticError = hi(fg.diagnosticerror, bg.diagnosticerror, nil, nil),
+          DiagnosticWarn = hi(fg.diagnosticwarn, bg.diagnosticwarn, nil, nil),
+          DiagnosticInfo = hi(fg.diagnosticinfo, bg.diagnosticinfo, nil, nil),
+          DiagnosticHint = hi(fg.diagnostichint, bg.diagnostichint, nil, nil),
+            DiagnosticOk = hi(fg.diagnosticok, bg.diagnosticok, nil, nil),
+
+    DiagnosticUnderlineError = hi(nil, nil, 'undercurl', fg.diagnosticerror),
+     DiagnosticUnderlineWarn = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
+     DiagnosticUnderlineInfo = hi(nil, nil, 'undercurl', fg.diagnosticinfo),
+     DiagnosticUnderlineHint = hi(nil, nil, 'undercurl', fg.diagnostichint),
+       DiagnosticUnderlineOk = hi(nil, nil, 'undercurl', fg.diagnosticok),
+
+  DiagnosticVirtualTextError = 'DiagnosticError', 
+   DiagnosticVirtualTextWarn = 'DiagnosticWarn',
+   DiagnosticVirtualTextInfo = 'DiagnosticInfo',
+   DiagnosticVirtualTextHint = 'DiagnosticHint',
+     DiagnosticVirtualTextOk = 'DiagnosticOk',
+  
+  DiagnosticFloatingError = 'DiagnosticError', 
+   DiagnosticFloatingWarn = 'DiagnosticWarn',
+   DiagnosticFloatingInfo = 'DiagnosticInfo',
+   DiagnosticFloatingHint = 'DiagnosticHint',
+     DiagnosticFloatingOk = 'DiagnosticOk',
+  
+  DiagnosticSignError = 'DiagnosticError', 
+   DiagnosticSignWarn = 'DiagnosticWarn',
+   DiagnosticSignInfo = 'DiagnosticInfo',
+   DiagnosticSignHint = 'DiagnosticHint',
+     DiagnosticSignOk = 'DiagnosticOk',
+
+-- ================== DAP =========================
+
+                      DapSign = hi(p.orange.vibrant, p.grey.pale, nil, nil),
+              DapRejectedSign = hi(p.red.vibrant, p.purple.pale, nil, nil),
+               DapStoppedSign = hi(p.grey.black, p.orange.vibrant, nil, nil),
+
+                DapUIVariable = '@variable', 
+                   DapUIScope = hi(p.fg, nil, nil, nil),
+                    DapUIType = '@type',
+                   DapUIValue = hi(p.green.dark2, nil, nil, nil), 
+           DapUIModifiedValue = hi(p.green.dark2, p.chartreuse.light, nil, nil), 
+              DapUIDecoration = hi(p.grey.vibrant, nil, nil, nil),
+                  DapUIThread = hi(p.red.dark1, nil, nil, nil),
+           DapUIStoppedThread = hi(p.orange.dark1, p.orange.pale, nil, nil),
+               DapUIFrameName = hi(p.orange.dark1, nil, nil, nil),
+                  DapUISource = hi(p.blue.dark1, p.blue.ghost, nil, nil),
+              DapUILineNumber = 'LineNr', 
+             DapUIFloatNormal = hi(nil, p.grey.ghost, nil, nil),
+             DapUIFloatBorder = hi(p.grey.vibrant, p.grey.ghost, nil, nil),
+            DapUIWatchesEmpty = hi(p.blue.pale, nil, nil, nil),
+            DapUIWatchesValue = hi(p.red.dark1, nil, nil, nil),
+            DapUIWatchesError = hi(p.yellow.light, p.red.vibrant, nil, nil),
+         DapUIBreakpointsPath = 'DapUISource',
+         DapUIBreakpointsInfo = hi(p.grey.dark1, p.grey.pale, nil, nil),
+  DapUIBreakpointsCurrentLine = hi(p.blue.dark1, p.orange.light, nil, nil),
+         DapUIBreakpointsLine = 'DapUILineNumber',
+  DapUIBreakpointsDisableLine = hi(p.yellow.vibrant, nil, nil, nil),
+        DapUICurrentFrameName = hi(p.orange.vibrant, nil, nil, nil),
+                DapUIStepOver = hi(p.orange.vibrant, nil, nil, nil),
+                DapUIStepInto = hi(p.orange.vibrant, nil, nil, nil),
+                DapUIStepBack = hi(p.grey.light, nil, nil, nil),
+                 DapUIStepOut = hi(p.orange.vibrant, nil, nil, nil),
+                    DapUIStop = hi(p.red.vibrant, nil, nil, nil, nil),
+               DapUIPlayPause = hi(p.green.vibrant, nil, nil, nil), 
+                 DapUIRestart = hi(p.green.vibrant, nil, nil, nil),
+             DapUIUnavailable = hi(p.grey.light, nil, nil, nil),
 
 -- ================== VIM Syntax =========================
 
@@ -169,58 +249,6 @@ local scheme = {
           Ignore = hi(nil, nil, nil, nil),
 
            Error = hi(p.red.vibrant, p.red.pale, 'bold,underline', nil),  -- any erroneous construct
-
--- ================== Diagnostic =========================
-
-         DiagnosticSignError = hi(p.red.vibrant, p.red.pale, nil, nil),
-          DiagnosticSignWarn = hi(p.yellow.dark1, p.yellow.pale, nil, nil),
-          DiagnosticSignInfo = hi(p.cyan.dark1, p.cyan.pale, nil, nil),
-          DiagnosticSignHint = hi(p.purple.dark1, p.purple.pale, nil, nil),
-  DiagnosticVirtualTextError = hi(p.red.vibrant, p.red.pale, nil, nil), 
-   DiagnosticVirtualTextWarn = hi(p.yellow.dark1, p.yellow.pale, nil, nil),
-   DiagnosticVirtualTextInfo = hi(p.cyan.dark1, p.cyan.pale, nil, nil),
-   DiagnosticVirtualTextHint = hi(p.purple.dark1, p.purple.pale, nil, nil),
-    DiagnosticUnderlineError = hi(nil, nil, 'undercurl', p.red.vibrant),
-     DiagnosticUnderlineWarn = hi(nil, nil, 'undercurl', p.orange.vibrant),
-     DiagnosticUnderlineInfo = hi(nil, nil, 'undercurl', p.cyan.dark1),
-     DiagnosticUnderlineHint = hi(nil, nil, 'undercurl', p.purple.vibrant),
- 
--- ================== DAP =========================
-
-                      DapSign = hi(p.orange.vibrant, p.grey.pale, nil, nil),
-              DapRejectedSign = hi(p.red.vibrant, p.purple.pale, nil, nil),
-               DapStoppedSign = hi(p.grey.black, p.orange.vibrant, nil, nil),
-
-                DapUIVariable = '@variable', 
-                   DapUIScope = hi(p.fg, nil, nil, nil),
-                    DapUIType = '@type',
-                   DapUIValue = hi(p.green.dark2, nil, nil, nil), 
-           DapUIModifiedValue = hi(p.green.dark2, p.chartreuse.light, nil, nil), 
-              DapUIDecoration = hi(p.grey.vibrant, nil, nil, nil),
-                  DapUIThread = hi(p.red.dark1, nil, nil, nil),
-           DapUIStoppedThread = hi(p.orange.dark1, p.orange.pale, nil, nil),
-               DapUIFrameName = hi(p.orange.dark1, nil, nil, nil),
-                  DapUISource = hi(p.blue.dark1, p.blue.ghost, nil, nil),
-              DapUILineNumber = 'LineNr', 
-             DapUIFloatNormal = hi(nil, p.grey.ghost, nil, nil),
-             DapUIFloatBorder = hi(p.grey.vibrant, p.grey.ghost, nil, nil),
-            DapUIWatchesEmpty = hi(p.blue.pale, nil, nil, nil),
-            DapUIWatchesValue = hi(p.red.dark1, nil, nil, nil),
-            DapUIWatchesError = hi(p.yellow.light, p.red.vibrant, nil, nil),
-         DapUIBreakpointsPath = 'DapUISource',
-         DapUIBreakpointsInfo = hi(p.grey.dark1, p.grey.pale, nil, nil),
-  DapUIBreakpointsCurrentLine = hi(p.blue.dark1, p.orange.light, nil, nil),
-         DapUIBreakpointsLine = 'DapUILineNumber',
-  DapUIBreakpointsDisableLine = hi(p.yellow.vibrant, nil, nil, nil),
-        DapUICurrentFrameName = hi(p.orange.vibrant, nil, nil, nil),
-                DapUIStepOver = hi(p.orange.vibrant, nil, nil, nil),
-                DapUIStepInto = hi(p.orange.vibrant, nil, nil, nil),
-                DapUIStepBack = hi(p.grey.light, nil, nil, nil),
-                 DapUIStepOut = hi(p.orange.vibrant, nil, nil, nil),
-                    DapUIStop = hi(p.red.vibrant, nil, nil, nil, nil),
-               DapUIPlayPause = hi(p.green.vibrant, nil, nil, nil), 
-                 DapUIRestart = hi(p.green.vibrant, nil, nil, nil),
-             DapUIUnavailable = hi(p.grey.light, nil, nil, nil),
 
     -- Treesitter  ===============================================================================
 
