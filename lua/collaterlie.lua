@@ -11,7 +11,7 @@ local fg = {
   highlight = '#484848',
   dialogborder = '#7f5107',
   selected = '#484848',
-  menu = '#532b14',
+  popup = '#432b04',
   addition = '#0f801e',
   deletion = '#801010',
   change = '#7f7f03',
@@ -21,7 +21,18 @@ local fg = {
   diagnosticwarn = '#7f7f03',
   diagnosticinfo = '#117980',
   diagnostichint = '#780f81',
-  diagnosticok = '#0f801e'
+  diagnosticok = '#0f801e',
+
+  syn_literal1 = '#0f801e',
+  syn_literal2 = '#08440f',
+
+  syn_function1 = '#432b04',
+  syn_function2 = '#7f5107',
+
+  syn_variable1 = '#410745',
+  syn_variable2 = '#780f81',
+
+  syn_preproc1 = '#801010',
 }
 
 local bg = {
@@ -30,7 +41,7 @@ local bg = {
   cursorline = '#dee1fa',
   gutter = '#ededed',
   dialog = '#fffaf6',
-  menu = '#ededed',
+  popup = '#fff8ff',
   selected = '#edffdb',
   addition = '#defbe1',
   deletion = '#fddddd',
@@ -40,7 +51,10 @@ local bg = {
   diagnosticwarn = '#fefedc',
   diagnosticinfo = '#ddfafc',
   diagnostichint = '#f9defc',
-  diagnosticok = '#defbe1'
+  diagnosticok = '#defbe1',
+
+  syn_variableA = '#fffaff',
+  syn_preprocA = '#fffafa',
 }
 
 local scheme = {
@@ -113,11 +127,11 @@ local scheme = {
 
       SpecialKey = hi(p.green.dark1, nil, nil, nil),
     
-           Pmenu = hi(fg.menu, bg.menu, nil, nil),
+           Pmenu = hi(fg.popup, bg.popup, nil, nil),
         PmenuSel = hi(fg.selected, bg.selected, nil, nil),
-    PmenuSelBold = hi(p.grey.dark2, p.chartreuse.light, 'bold', nil),
-      PmenuThumb = hi(nil, p.grey.vibrant, nil, nil),
-       PmenuSbar = hi(nil, p.grey.light, nil, nil),
+    PmenuSelBold = hi(fg.selected, bg.selected, 'bold', nil),
+      PmenuThumb = hi(nil, bg.gutter, nil, nil),
+       PmenuSbar = hi(nil, fg.popup, nil, nil),
 
         Question = hi(p.grey.black, p.orange.vibrant, nil, nil),
     MsgSeparator = hi(p.grey.white, p.grey.dark1, nil, nil),
@@ -129,7 +143,7 @@ local scheme = {
 -- Telescope  ===============================================================================
 
           TelescopeBorder = hi(fg.dialogborder, bg.dialog, nil, nil), 
-          TelescopeNormal =  hi(fg.normal, bg.dialog, nil, nil),
+          TelescopeNormal = hi(fg.normal, bg.dialog, nil, nil),
        TelescopeSelection = hi(fg.selected, bg.selected, nil, nil),
   TelescopeSelectionCaret = hi(fg.normal, bg.selected, nil, nil),
   TelescopeMultiSelection = hi(fg.highlight, bg.highlight, nil, nil),
@@ -273,22 +287,22 @@ local scheme = {
            ['@text.warning'] = 'WarningMsg',
             ['@text.danger'] = 'Error',
   
-               ['@constant'] = hi(p.green.dark2, nil, nil, nil), 
-       ['@constant.builtin'] = hi(p.green.dark1, nil, nil, nil),
-                 ['@string'] = hi(p.green.dark2, nil, nil, nil),
-          ['@string.escape'] = hi(p.green.dark1, nil, "bold", nil),
-         ['@string.special'] = hi(p.green.dark1, nil, "bold", nil),
-              ['@character'] = hi(p.green.dark1, nil, nil, nil),
-      ['@character.special'] = hi(p.green.dark1, nil, "bold", nil),
-                 ['@number'] = hi(p.green.dark1, nil, nil, nil),
-                ['@boolean'] = hi(p.green.dark1, nil, nil, nil),
-                  ['@float'] = hi(p.green.dark1, nil, nil, nil), 
+               ['@constant'] = hi(fg.syn_literal2, nil, nil, nil), 
+       ['@constant.builtin'] = hi(fg.syn_literal1, nil, nil, nil),
+                 ['@string'] = hi(fg.syn_literal2, nil, nil, nil),
+          ['@string.escape'] = hi(fg.syn_literal1, nil, "bold", nil),
+         ['@string.special'] = hi(fg.syn_literal1, nil, "bold", nil),
+              ['@character'] = hi(fg.syn_literal1, nil, nil, nil),
+      ['@character.special'] = hi(fg.syn_literal1, nil, "bold", nil),
+                 ['@number'] = hi(fg.syn_literal1, nil, nil, nil),
+                ['@boolean'] = hi(fg.syn_literal1, nil, nil, nil),
+                  ['@float'] = hi(fg.syn_literal1, nil, nil, nil), 
 
-                 ['@method'] = hi(p.orange.dark2, nil, nil, nil),
-            ['@method.call'] = hi(p.orange.dark2, nil, nil, nil),
-               ['@function'] = hi(p.orange.dark2, nil, nil, nil),
-          ['@function.call'] = hi(p.orange.dark2, nil, nil, nil),
-       ['@function.builtin'] = hi(p.orange.dark1, nil, nil, nil),
+                 ['@method'] = hi(fg.syn_function1, nil, nil, nil),
+            ['@method.call'] = hi(fg.syn_function1, nil, nil, nil),
+               ['@function'] = hi(fg.syn_function1, nil, nil, nil),
+          ['@function.call'] = hi(fg.syn_function1, nil, nil, nil),
+       ['@function.builtin'] = hi(fg.syn_function2, nil, nil, nil),
 
             ['@conditional'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
                  ['@repeat'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
@@ -300,13 +314,13 @@ local scheme = {
        ['@keyword.operator'] = hi(p.blue.dark2, p.blue.ghost, nil, nil), 
               ['@exception'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
 
-               ['@variable'] = hi(p.purple.dark2, nil, nil, nil),
-       ['@variable.builtin'] = hi(p.purple.dark1, nil, nil, nil), 
-              ['@parameter'] = hi(p.purple.dark2, p.purple.ghost, nil, nil),
+               ['@variable'] = hi(fg.syn_variable1, nil, nil, nil),
+       ['@variable.builtin'] = hi(fg.syn_variable2, nil, nil, nil), 
+              ['@parameter'] = hi(fg.syn_variable1, bg.syn_variableA, nil, nil),
 
-    ['@parameter.reference'] = hi(p.purple.dark2, p.purple.ghost, nil, nil), 
-                  ['@field'] = hi(p.purple.dark2, nil, nil, nil),
-               ['@property'] = hi(p.purple.dark2, nil, nil, nil),
+    ['@parameter.reference'] = hi(fg.syn_variable1, bg.syn_variableA, nil, nil), 
+                  ['@field'] = hi(fg.syn_variable1, nil, nil, nil),
+               ['@property'] = hi(fg.syn_variable1, nil, nil, nil),
 
                    ['@type'] = hi(p.cyan.dark1, nil, nil, nil),
         ['@type.definition'] = hi(p.cyan.dark1, nil, nil, nil),
@@ -318,12 +332,12 @@ local scheme = {
 
               ['@namespace'] = hi(p.green.dark2, nil, nil, nil),
 
-                ['@include'] = hi(p.red.dark1, p.red.ghost, nil, nil),
-                ['@preproc'] = hi(p.red.dark1, p.red.ghost, nil, nil),
-                 ['@define'] = hi(p.red.dark1, p.red.ghost, nil, nil),
-         ['@constant.macro'] = hi(p.red.dark1, nil, nil, nil),
-         ['@function.macro'] = hi(p.red.dark1, nil, nil, nil),
-                  ['@macro'] = hi(p.red.dark1, nil, nil, nil),
+                ['@include'] = hi(fg.syn_preproc1, bg.syn_preprocA, nil, nil),
+                ['@preproc'] = hi(fg.syn_preproc1, bg.syn_preprocA, nil, nil),
+                 ['@define'] = hi(fg.syn_preproc1, bg.syn_preprocA, nil, nil),
+         ['@constant.macro'] = hi(fg.syn_preproc1, nil, nil, nil),
+         ['@function.macro'] = hi(fg.syn_preproc1, nil, nil, nil),
+                  ['@macro'] = hi(fg.syn_preproc1, nil, nil, nil),
              ['@annotation'] = hi(p.grey.vibrant, p.red.ghost, 'bold', nil),
               ['@attribute'] = hi(p.grey.vibrant, p.red.ghost, 'bold', nil),
       
