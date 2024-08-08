@@ -25,14 +25,19 @@ local fg = {
 
   syn_literal1 = '#0f801e',
   syn_literal2 = '#08440f',
-
   syn_function1 = '#432b04',
   syn_function2 = '#7f5107',
-
   syn_variable1 = '#410745',
   syn_variable2 = '#780f81',
-
   syn_preproc1 = '#801010',
+  syn_namespace = '#08440f',
+  syn_metadata = '#818181',
+  syn_todo = '#7f5107',
+  syn_type1 = '#117980',
+  syn_type2 = '#093e43',
+  syn_keyword1 = '#070e44',
+  syn_keyword2 = '#0e187f',
+  syn_comment = '#e9c865'
 }
 
 local bg = {
@@ -53,8 +58,12 @@ local bg = {
   diagnostichint = '#f9defc',
   diagnosticok = '#defbe1',
 
-  syn_variableA = '#fffaff',
-  syn_preprocA = '#fffafa',
+  syn_variable = '#fffaff', -- The background might only be applied for some highlights 
+  syn_preproc = '#fffafa',
+  syn_metadata = '#fffafa',
+  syn_todo = '#fcfb9d',
+  syn_keyword1 = '#fafaff',
+  syn_keyword2 = '#fffdfa',
 }
 
 local scheme = {
@@ -266,7 +275,7 @@ local scheme = {
 
     -- Treesitter  ===============================================================================
 
-                ['@comment'] = hi(p.orange.light, nil, 'italic', nil), 
+                ['@comment'] = hi(fg.syn_comment, nil, 'italic', nil), 
             ['@punctuation'] = hi(p.fg, nil, nil, nil),
   ['@punctuation.delimiter'] = hi(p.fg, nil, nil, nil),
     ['@punctuation.bracket'] = hi(p.purple.dark2, nil, nil, nil),
@@ -277,7 +286,7 @@ local scheme = {
          ['@text.reference'] = hi(p.blue.dark1, nil, nil, nil),
                ['@text.uri'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
          ['@text.underline'] = hi(nil, nil, 'underline', nil),
-              ['@text.todo'] = 'Todo',
+              ['@text.todo'] = '@todo',
           ['@text.emphasis'] = hi(nil, p.orange.ghost, 'italic', nil),
             ['@text.strong'] = hi(nil, p.orange.light, 'bold', nil),
             ['@text.strike'] = hi(nil, nil, 'strikethrough', nil),
@@ -304,44 +313,45 @@ local scheme = {
           ['@function.call'] = hi(fg.syn_function1, nil, nil, nil),
        ['@function.builtin'] = hi(fg.syn_function2, nil, nil, nil),
 
-            ['@conditional'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-                 ['@repeat'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-                  ['@label'] = hi(p.blue.dark1, p.orange.ghost, 'bold', nil),
-               ['@operator'] = hi(p.blue.dark1, nil, nil, nil),
-                ['@keyword'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-         ['@keyword.return'] = hi(p.blue.dark1, p.blue.ghost, nil, nil),
-       ['@keyword.function'] = hi(p.blue.dark1, p.blue.ghost, nil, nil),
-       ['@keyword.operator'] = hi(p.blue.dark2, p.blue.ghost, nil, nil), 
-              ['@exception'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
+            ['@conditional'] = hi(fg.syn_keyword1, bg.syn_keyword1, nil, nil),
+                 ['@repeat'] = hi(fg.syn_keyword1, bg.syn_keyword1, nil, nil),
+                  ['@label'] = hi(fg.syn_keyword2, bg.syn_keyword2, 'bold', nil),
+               ['@operator'] = hi(fg.syn_keyword2, nil, nil, nil),
+                ['@keyword'] = hi(fg.syn_keyword1, bg.syn_keyword1, nil, nil),
+         ['@keyword.return'] = hi(fg.syn_keyword2, bg.syn_keyword1, nil, nil),
+       ['@keyword.function'] = hi(fg.syn_keyword2, bg.syn_keyword1, nil, nil),
+       ['@keyword.operator'] = hi(fg.syn_keyword1, bg.syn_keyword1, nil, nil), 
+              ['@exception'] = hi(fg.syn_keyword1, bg.syn_keyword1, nil, nil),
 
                ['@variable'] = hi(fg.syn_variable1, nil, nil, nil),
        ['@variable.builtin'] = hi(fg.syn_variable2, nil, nil, nil), 
-              ['@parameter'] = hi(fg.syn_variable1, bg.syn_variableA, nil, nil),
+              ['@parameter'] = hi(fg.syn_variable1, bg.syn_variable, nil, nil),
 
-    ['@parameter.reference'] = hi(fg.syn_variable1, bg.syn_variableA, nil, nil), 
+    ['@parameter.reference'] = hi(fg.syn_variable1, bg.syn_variable, nil, nil), 
                   ['@field'] = hi(fg.syn_variable1, nil, nil, nil),
                ['@property'] = hi(fg.syn_variable1, nil, nil, nil),
 
-                   ['@type'] = hi(p.cyan.dark1, nil, nil, nil),
-        ['@type.definition'] = hi(p.cyan.dark1, nil, nil, nil),
-         ['@type.qualifier'] = hi(p.cyan.dark1, nil, nil, nil),
-           ['@type.builtin'] = hi(p.cyan.dark2, nil, nil, nil), 
-           ['@storageclass'] = hi(p.cyan.dark1, nil, nil, nil),
-              ['@structure'] = hi(p.cyan.dark1, nil, nil, nil),
-            ['@constructor'] = hi(p.cyan.dark1, nil, nil, nil),
+                   ['@type'] = hi(fg.syn_type1, nil, nil, nil),
+        ['@type.definition'] = hi(fg.syn_type1, nil, nil, nil),
+         ['@type.qualifier'] = hi(fg.syn_type1, nil, nil, nil),
+           ['@type.builtin'] = hi(fg.syn_type2, nil, nil, nil), 
+           ['@storageclass'] = hi(fg.syn_type1, nil, nil, nil),
+              ['@structure'] = hi(fg.syn_type1, nil, nil, nil),
+            ['@constructor'] = hi(fg.syn_type1, nil, nil, nil),
 
-              ['@namespace'] = hi(p.green.dark2, nil, nil, nil),
+              ['@namespace'] = hi(fg.syn_namespace, nil, nil, nil),
 
-                ['@include'] = hi(fg.syn_preproc1, bg.syn_preprocA, nil, nil),
-                ['@preproc'] = hi(fg.syn_preproc1, bg.syn_preprocA, nil, nil),
-                 ['@define'] = hi(fg.syn_preproc1, bg.syn_preprocA, nil, nil),
+                ['@include'] = hi(fg.syn_preproc1, bg.syn_preproc, nil, nil),
+                ['@preproc'] = hi(fg.syn_preproc1, bg.syn_preproc, nil, nil),
+                 ['@define'] = hi(fg.syn_preproc1, bg.syn_preproc, nil, nil),
          ['@constant.macro'] = hi(fg.syn_preproc1, nil, nil, nil),
          ['@function.macro'] = hi(fg.syn_preproc1, nil, nil, nil),
                   ['@macro'] = hi(fg.syn_preproc1, nil, nil, nil),
-             ['@annotation'] = hi(p.grey.vibrant, p.red.ghost, 'bold', nil),
-              ['@attribute'] = hi(p.grey.vibrant, p.red.ghost, 'bold', nil),
+
+             ['@annotation'] = hi(fg.syn_metadata, bg.syn_metadata, 'bold', nil),
+              ['@attribute'] = hi(fg.syn_metadata, bg.syn_metadata, 'bold', nil),
       
-                   ['@todo'] =  hi(p.orange.dark1, p.yellow.light, 'bold', nil)
+                   ['@todo'] =  hi(fg.syn_todo, bg.syn_todo, 'bold', nil)
 }
 
 local function highlight(group, style)
