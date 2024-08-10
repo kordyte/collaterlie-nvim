@@ -37,7 +37,11 @@ local fg = {
   syn_type2 = '#093e43',
   syn_keyword1 = '#070e44',
   syn_keyword2 = '#0e187f',
-  syn_comment = '#e9c865'
+  syn_comment = '#e9c865',
+  syn_text_title = '#0f801e',
+  syn_text_literal = '#780f81',
+  syn_text_reference = '#0e187f',
+  syn_text_uri = '#070e44',
 }
 
 local bg = {
@@ -66,9 +70,10 @@ local bg = {
   syn_keyword2 = '#fffdfa',
 }
 
-local scheme = {
-          Normal = hi(fg.normal, bg.normal, nil, nil), 
-        NormalNC = hi(fg.normal, bg.normal, nil, nil),   -- Normal text in non-current windows, will be used as the bckground when a dialog is shown
+local ui = {
+          Normal = hi('#432b04', '#fdfdfc', nil, nil), 
+        NormalNC = hi('#432b04', '#fdfdfc', nil, nil),  
+         -- Normal text in non-current windows, will be used as the background when a dialog is shown
 
           Cursor = hi('#000000', '#f1990e', nil, nil), -- for the cursor highlights to work, 
          nCursor = hi('#000000', '#f1990e', nil, nil), -- the highlight group will need to be set for
@@ -78,51 +83,63 @@ local scheme = {
          cCursor = hi('#000000', '#d319e2', nil, nil),
 
         CursorIM = hi(nil, nil, 'bold', nil),      -- for IME mode (inputing multibyte characters)
-    CursorColumn = hi(nil, bg.cursorline, nil, nil),   -- for when cursorcolumn is set
-      CursorLine = hi(nil, bg.cursorline, nil, nil),     -- for when cursorline is set
+    CursorColumn = hi(nil, '#dee1fa', nil, nil),   -- for when cursorcolumn is set
+      CursorLine = hi(nil, '#dee1fa', nil, nil),     -- for when cursorline is set
 
-          LineNr = hi('#0e187f', bg.gutter, 'italic', nil),
-    CursorLineNr = hi('#070e44', bg.cursorline, 'bold,italic', nil),
-      SignColumn = hi(fg.normal, bg.gutter, nil, nil),
-  CursorLineSign = hi(fg.normal, bg.cursorline, nil, nil), 
+          LineNr = hi('#0e187f', '#ededed', 'italic', nil),
+    CursorLineNr = hi('#070e44', '#dee1fa', 'bold,italic', nil),
+      SignColumn = hi(nil, '#ededed', nil, nil),
+  CursorLineSign = hi(nil, '#dee1fa', nil, nil), 
 
       StatusLine = hi('#fdfdfc', '#7f5107', nil, nil),
     StatusLineNC = hi('#ededed', '#818181', nil, nil),
 
-    QuickFixLine = hi(fg.normal, '#fddddd', nil, nil),
-
-          WinBar = hi(fg.normal, bg.normal, nil, nil),
-        WinBarNC = hi(fg.normal, bg.normal, nil, nil),
-    WinSeparator = hi(bg.normal, '#484848', nil, nil),
+    QuickFixLine = hi(nil, '#fddddd', nil, nil),
+          
+          WinBar = hi(nil, nil, nil, nil),
+        WinBarNC = hi(nil, nil, nil, nil),
+    WinSeparator = hi('#fdfdfc', '#484848', nil, nil),
 
          Tabline = hi('#801010', '#ededed', 'italic', nil),
      TabLineFill = hi(nil, '#ededed', nil, nil),
-      TabLineSel = hi('#801010', bg.normal, 'bold,italic', nil),
+      TabLineSel = hi('#801010', nil, 'bold,italic', nil),
 
       MatchParen = hi('#484848', '#a1a9f5', nil, nil),
 
-     EndOfBuffer = hi(nil, bg.gutter, nil, nil),    -- Bottom of screen when scrolled up
-         NonText = hi('#f4a3a3', bg.normal, nil, nil), 
-      Whitespace = hi('#070e44', bg.normal, nil, nil),
+     EndOfBuffer = hi(nil, '#ededed', nil, nil),    -- Bottom of screen when scrolled up
+         NonText = hi('#f4a3a3', nil, nil, nil), 
+      Whitespace = hi('#070e44', nil, nil, nil),
 
-          Visual = hi(nil, p.orange.pale, nil, nil),
-       VisualNOS = hi(nil, p.grey.pale, nil, nil),  -- for when window does not have focus (X11 only)
+          Visual = hi(nil, '#fef0dc', nil, nil),
+       VisualNOS = hi(nil, '#ededed', nil, nil),  -- for when window does not have focus (X11 only)
 
-         Conceal = hi(p.grey.vibrant, p.bg, nil, nil), 
+         Conceal = hi('#818181', nil, nil, nil), 
 
-        ErrorMsg = hi(p.yellow.pale, p.red.vibrant, 'bold', nil),   -- error messages displayed on the command line
-         MoreMsg = hi(p.grey.black, p.red.pale, nil, nil),
-      WarningMsg = hi(p.orange.dark1, p.red.light, nil, nil),
-         ModeMsg = hi(p.grey.black, p.orange.light, nil, nil),
+          Folded = hi('#0f801e', '#fefedc', nil, nil),
+      FoldColumn = hi('#0f801e', '#fefedc', 'bold', nil),
 
-          Folded = hi(p.orange.dark1, p.yellow.pale, nul, nil),
-      FoldColumn = hi(p.orange.dark1, p.yellow.pale, 'bold', nil),
+          Search = hi('#484848', '#cbff97', nil, nil),
+       CurSearch = hi('#484848', '#cbff97', 'bold', nil),
+       IncSearch = hi('#484848', '#cbff97', 'bold', nil),
 
-          Search = hi(fg.highlight, bg.highlight, nil, nil),
-       CurSearch = hi(fg.highlight, bg.highlight, 'bold', nil),
-       IncSearch = hi(fg.highlight, bg.highlight, 'bold', nil),
+           Pmenu = hi('#181818', '#f0f0f0', nil, nil),
+        PmenuSel = hi('#484848', '#edffdb', nil, nil),
+    PmenuSelBold = hi('#484848', '#edffdb', 'bold', nil),
+      PmenuThumb = hi(nil, '#d0d0d0', nil, nil),
+       PmenuSbar = hi(nil, '#e0e0e0', nil, nil),
 
-        SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
+        ErrorMsg = hi('#fefedc', '#e31c1c', 'bold', nil),   -- error messages displayed on the command line
+         MoreMsg = hi('#000000', '#fddddd', nil, nil),
+      WarningMsg = hi('#7f5107', '#f4a3a3', nil, nil),
+         ModeMsg = hi('#000000', '#f8d59e', nil, nil),
+
+}
+
+local scheme = {
+
+
+  
+         SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
         SpellCap = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
        SpellRare = hi(nil, nil, 'undercurl', fg.diagnostichint),
       SpellLocal = hi(nil, nil, 'undercurl', fg.diagnostichint),
@@ -136,12 +153,7 @@ local scheme = {
 
       SpecialKey = hi(p.green.dark1, nil, nil, nil),
     
-           Pmenu = hi(fg.popup, bg.popup, nil, nil),
-        PmenuSel = hi(fg.selected, bg.selected, nil, nil),
-    PmenuSelBold = hi(fg.selected, bg.selected, 'bold', nil),
-      PmenuThumb = hi(nil, bg.gutter, nil, nil),
-       PmenuSbar = hi(nil, fg.popup, nil, nil),
-
+  
         Question = hi(p.grey.black, p.orange.vibrant, nil, nil),
     MsgSeparator = hi(p.grey.white, p.grey.dark1, nil, nil),
            Title = hi(p.orange.vibrant, nil, nil, nil),
@@ -276,15 +288,15 @@ local scheme = {
     -- Treesitter  ===============================================================================
 
                 ['@comment'] = hi(fg.syn_comment, nil, 'italic', nil), 
-            ['@punctuation'] = hi(p.fg, nil, nil, nil),
-  ['@punctuation.delimiter'] = hi(p.fg, nil, nil, nil),
+            ['@punctuation'] = hi(fg.normal, nil, nil, nil),
+  ['@punctuation.delimiter'] = hi(fg.normal, nil, nil, nil),
     ['@punctuation.bracket'] = hi(p.purple.dark2, nil, nil, nil),
     ['@punctuation.special'] = hi(p.blue.dark1, nil, nil, nil),
     
-             ['@text.title'] = hi(p.green.dark1, p.green.ghost),
-           ['@text.literal'] = hi(p.purple.dark1, p.purple.ghost),
-         ['@text.reference'] = hi(p.blue.dark1, nil, nil, nil),
-               ['@text.uri'] = hi(p.blue.dark2, p.blue.ghost, nil, nil),
+             ['@text.title'] = hi(fg.syn_text_title, p.green.ghost),
+           ['@text.literal'] = hi(fg.syn_text_literal, p.purple.ghost),
+         ['@text.reference'] = hi(fg.syn_text_reference, nil, nil, nil),
+               ['@text.uri'] = hi(fg.syn_text_uri, p.blue.ghost, nil, nil),
          ['@text.underline'] = hi(nil, nil, 'underline', nil),
               ['@text.todo'] = '@todo',
           ['@text.emphasis'] = hi(nil, p.orange.ghost, 'italic', nil),
@@ -369,6 +381,16 @@ end
 
 local M = {}
 
+local function apply_set(set)
+  for group, style in pairs(set) do
+    if (type(style) == 'string') then
+      link(group, style)
+    else
+      highlight(group, style)
+    end
+  end
+end
+
 M.colorscheme = function()
   vim.cmd('hi clear')
   if (vim.fn.exists('syntax_on')) then
@@ -376,13 +398,15 @@ M.colorscheme = function()
   end
   vim.o.background = 'light'
   vim.o.termguicolors = true
-  for group, style in pairs(scheme) do
-    if (type(style) == 'string') then
-      link(group, style)
-    else
-      highlight(group, style)
-    end
-  end
+  apply_set(ui)
+  apply_set(scheme)
+--  for group, style in pairs(scheme) do
+ --   if (type(style) == 'string') then
+  --    link(group, style)
+ --   else
+  --    highlight(group, style)
+ --   end
+ -- end
 end
 
 
