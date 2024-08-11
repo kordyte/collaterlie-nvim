@@ -71,8 +71,8 @@ local bg = {
 }
 
 local ui = {
-          Normal = hi('#432b04', '#fdfdfc', nil, nil), 
-        NormalNC = hi('#432b04', '#fdfdfc', nil, nil),  
+          Normal = hi('#432b04', '#fefefd', nil, nil), 
+        NormalNC = hi('#432b04', '#f9f8f5', nil, nil),  
          -- Normal text in non-current windows, will be used as the background when a dialog is shown
 
           Cursor = hi('#000000', '#f1990e', nil, nil), -- for the cursor highlights to work, 
@@ -83,13 +83,13 @@ local ui = {
          cCursor = hi('#000000', '#d319e2', nil, nil),
 
         CursorIM = hi(nil, nil, 'bold', nil),      -- for IME mode (inputing multibyte characters)
-    CursorColumn = hi(nil, '#dee1fa', nil, nil),   -- for when cursorcolumn is set
-      CursorLine = hi(nil, '#dee1fa', nil, nil),     -- for when cursorline is set
+    CursorColumn = hi(nil, '#fef8e8', nil, nil),   -- for when cursorcolumn is set
+      CursorLine = hi(nil, '#fef8e8', nil, nil),     -- for when cursorline is set
 
-          LineNr = hi('#0e187f', '#ededed', 'italic', nil),
-    CursorLineNr = hi('#070e44', '#dee1fa', 'bold,italic', nil),
-      SignColumn = hi(nil, '#ededed', nil, nil),
-  CursorLineSign = hi(nil, '#dee1fa', nil, nil), 
+          LineNr = hi('#432b04', '#f9f8f5', 'italic', nil),
+    CursorLineNr = hi('#111111', '#fee8b8', 'bold,italic', nil),
+      SignColumn = hi(nil, '#f9f8f5', nil, nil),
+  CursorLineSign = hi(nil, '#fee8b8', nil, nil), 
 
       StatusLine = hi('#fdfdfc', '#7f5107', nil, nil),
     StatusLineNC = hi('#ededed', '#818181', nil, nil),
@@ -98,7 +98,7 @@ local ui = {
           
           WinBar = hi(nil, nil, nil, nil),
         WinBarNC = hi(nil, nil, nil, nil),
-    WinSeparator = hi('#fdfdfc', '#484848', nil, nil),
+    WinSeparator = hi('#7f5107', '#f9f9f5', nil, nil),
 
          Tabline = hi('#801010', '#ededed', 'italic', nil),
      TabLineFill = hi(nil, '#ededed', nil, nil),
