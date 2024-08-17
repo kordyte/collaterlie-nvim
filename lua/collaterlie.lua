@@ -70,9 +70,32 @@ local bg = {
   syn_keyword2 = '#fffdfa',
 }
 
+common = {
+  fg = '#432b04',
+  gutter_bg = '#f9f8f5',
+  external_bg = '#ebeae7',
+  highlight_fg = '#484848',
+  highlight_bg = '#cbff97',
+  selected_fg = '#484848',
+  selected_bg = '#fefe50',
+  dialog_bg = '#f8f8e0',
+  dialogborder = '#7f5107',
+  diagerror_fg = '#e31c1c',
+  diagerror_bg = '#fddddd',
+  diagwarn_fg = '#7f7f03',
+  diagwarn_bg = '#fefedc',
+  diaginfo_fg = '#117980',
+  diaginfo_bg = '#ddfafc',
+  diaghint_fg = '#780f81',
+  diaghint_bg = '#f9defc',
+  diagok_fg = '#0f801e',
+  diagok_bg = '#defbe1',
+}
+
+
 local ui = {
-          Normal = hi('#432b04', '#fefefd', nil, nil), 
-        NormalNC = hi('#432b04', '#f9f8f5', nil, nil),  
+          Normal = hi(common.fg, '#fefefd', nil, nil), 
+        NormalNC = hi(common.fg, common.gutter_bg, nil, nil),  
          -- Normal text in non-current windows, will be used as the background when a dialog is shown
 
           Cursor = hi('#000000', '#f1990e', nil, nil), -- for the cursor highlights to work, 
@@ -86,27 +109,28 @@ local ui = {
     CursorColumn = hi(nil, '#fef8e8', nil, nil),   -- for when cursorcolumn is set
       CursorLine = hi(nil, '#fef8e8', nil, nil),     -- for when cursorline is set
 
-          LineNr = hi('#432b04', '#f9f8f5', 'italic', nil),
+          LineNr = hi(common.fg, common.gutter_bg, 'italic', nil),
     CursorLineNr = hi('#111111', '#fee8b8', 'bold,italic', nil),
-      SignColumn = hi(nil, '#f9f8f5', nil, nil),
+      SignColumn = hi(nil, common.gutter_bg, nil, nil),
   CursorLineSign = hi(nil, '#fee8b8', nil, nil), 
 
-      StatusLine = hi('#fdfdfc', '#7f5107', nil, nil),
-    StatusLineNC = hi('#ededed', '#818181', nil, nil),
+      StatusLine = hi('#fdfdfc', '#7f5107', nil, nil), -- Irrelevant if using something like lualine
+    StatusLineNC = hi(common.fg, '#f0e2d8', nil, nil),
 
     QuickFixLine = hi(nil, '#fddddd', nil, nil),
-          
-          WinBar = hi(nil, nil, nil, nil),
-        WinBarNC = hi(nil, nil, nil, nil),
+    
     WinSeparator = hi('#7f5107', '#f9f9f5', nil, nil),
+          
+          WinBar = hi(nil, common.gutter_bg, nil, nil),
+        WinBarNC = hi(nil, nil, nil, nil),
 
-         Tabline = hi('#801010', '#ededed', 'italic', nil),
-     TabLineFill = hi(nil, '#ededed', nil, nil),
+         Tabline = hi('#801010', common.external_bg, 'italic', nil),
+     TabLineFill = hi(nil, common.external_bg, nil, nil),
       TabLineSel = hi('#801010', nil, 'bold,italic', nil),
 
-      MatchParen = hi('#484848', '#a1a9f5', nil, nil),
+      MatchParen = hi(nil, common.highlight_bg, nil, nil),
 
-     EndOfBuffer = hi(nil, '#ededed', nil, nil),    -- Bottom of screen when scrolled up
+     EndOfBuffer = hi(nil, common.external_bg, nil, nil),    -- Bottom of screen when scrolled up
          NonText = hi('#f4a3a3', nil, nil, nil), 
       Whitespace = hi('#070e44', nil, nil, nil),
 
@@ -118,15 +142,15 @@ local ui = {
           Folded = hi('#0f801e', '#fefedc', nil, nil),
       FoldColumn = hi('#0f801e', '#fefedc', 'bold', nil),
 
-          Search = hi('#484848', '#cbff97', nil, nil),
-       CurSearch = hi('#484848', '#cbff97', 'bold', nil),
-       IncSearch = hi('#484848', '#cbff97', 'bold', nil),
+          Search = hi(common.highlight_fg, common.highlight_bg, nil, nil),
+       CurSearch = hi(common.highlight_fg, common.highlight_bg, 'bold', nil),
+       IncSearch = hi(common.highlight_fg, 'bold', nil),
 
-           Pmenu = hi('#181818', '#f0f0f0', nil, nil),
-        PmenuSel = hi('#484848', '#edffdb', nil, nil),
-    PmenuSelBold = hi('#484848', '#edffdb', 'bold', nil),
-      PmenuThumb = hi(nil, '#d0d0d0', nil, nil),
-       PmenuSbar = hi(nil, '#e0e0e0', nil, nil),
+           Pmenu = hi(common.dialog_fg, common.dialog_bg, nil, nil), -- For the popup menu and the completion dialogs
+        PmenuSel = hi(common.selected_fg, common.selected_bg, nil, nil),
+    PmenuSelBold = hi(common.selected_fg, common.selected_bg, 'bold', nil),
+      PmenuThumb = hi(nil, '#f0e0a0', nil, nil), -- Only observed this in completion dialogs
+       PmenuSbar = hi(nil, '#f8f0d8', nil, nil),
 
         ErrorMsg = hi('#fefedc', '#e31c1c', 'bold', nil),   -- error messages displayed on the command line
          MoreMsg = hi('#000000', '#fddddd', nil, nil),
@@ -135,10 +159,16 @@ local ui = {
 
 }
 
+local telescope = {
+          TelescopeNormal = hi(common.fg, common.dialog_bg, nil, nil),
+          TelescopeBorder = hi(common.dialog_border, common.dialog_bg, nil, nil), 
+       TelescopeSelection = hi(common.selected_fg, common.selected_bg, nil, nil),
+  TelescopeSelectionCaret = hi(common.fg, common.selected_fg, nil, nil),
+  TelescopeMultiSelection = hi(common.highlight_fg, common.highlight_bg, nil, nil),
+        TelescopeMatching = hi(common.highlight_g, common.highlight_bg, nil, nil),
+}
+
 local scheme = {
-
-
-  
          SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
         SpellCap = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
        SpellRare = hi(nil, nil, 'undercurl', fg.diagnostichint),
@@ -163,12 +193,6 @@ local scheme = {
 
 -- Telescope  ===============================================================================
 
-          TelescopeBorder = hi(fg.dialogborder, bg.dialog, nil, nil), 
-          TelescopeNormal = hi(fg.normal, bg.dialog, nil, nil),
-       TelescopeSelection = hi(fg.selected, bg.selected, nil, nil),
-  TelescopeSelectionCaret = hi(fg.normal, bg.selected, nil, nil),
-  TelescopeMultiSelection = hi(fg.highlight, bg.highlight, nil, nil),
-        TelescopeMatching = hi(fg.highlight, bg.highlight, nil, nil),
 
 -- ================== Diagnostic =========================
 
@@ -400,6 +424,7 @@ M.colorscheme = function()
   vim.o.termguicolors = true
   apply_set(ui)
   apply_set(scheme)
+  apply_set(telescope)
 --  for group, style in pairs(scheme) do
  --   if (type(style) == 'string') then
   --    link(group, style)
