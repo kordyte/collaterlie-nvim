@@ -70,6 +70,12 @@ local bg = {
   syn_keyword2 = '#fffdfa',
 }
 
+normal = hi('#432b04', '#fefefd', nil, nil)
+dialog = hi(normal.fg, '#fbf9e8', nil, nil)
+dialogborder = hi('#7f5107', dialog.bg, nil, nil)
+selected = hi('#484848', '#fefe50', nil, nil)
+highlighted = hi('#484848', '#cbff97', nil, nil)
+
 common = {
   fg = '#432b04',
   gutter_bg = '#f9f8f5',
@@ -93,8 +99,8 @@ common = {
 }
 
 
-local ui = {
-          Normal = hi(common.fg, '#fefefd', nil, nil), 
+local ui_set = {
+          Normal = normal, 
         NormalNC = hi(common.fg, common.gutter_bg, nil, nil),  
          -- Normal text in non-current windows, will be used as the background when a dialog is shown
 
@@ -109,7 +115,7 @@ local ui = {
     CursorColumn = hi(nil, '#fef8e8', nil, nil),   -- for when cursorcolumn is set
       CursorLine = hi(nil, '#fef8e8', nil, nil),     -- for when cursorline is set
 
-          LineNr = hi(common.fg, common.gutter_bg, 'italic', nil),
+          LineNr = hi(normal.fg, common.gutter_bg, 'italic', nil),
     CursorLineNr = hi('#111111', '#fee8b8', 'bold,italic', nil),
       SignColumn = hi(nil, common.gutter_bg, nil, nil),
   CursorLineSign = hi(nil, '#fee8b8', nil, nil), 
@@ -146,7 +152,7 @@ local ui = {
        CurSearch = hi(common.highlight_fg, common.highlight_bg, 'bold', nil),
        IncSearch = hi(common.highlight_fg, 'bold', nil),
 
-           Pmenu = hi(common.dialog_fg, common.dialog_bg, nil, nil), -- For the popup menu and the completion dialogs
+           Pmenu = hi(dialog.fg, dialog.bg, nil, nil), -- For the popup menu and the completion dialogs
         PmenuSel = hi(common.selected_fg, common.selected_bg, nil, nil),
     PmenuSelBold = hi(common.selected_fg, common.selected_bg, 'bold', nil),
       PmenuThumb = hi(nil, '#f0e0a0', nil, nil), -- Only observed this in completion dialogs
@@ -159,16 +165,16 @@ local ui = {
 
 }
 
-local telescope = {
-          TelescopeNormal = hi(common.fg, common.dialog_bg, nil, nil),
-          TelescopeBorder = hi(common.dialog_border, common.dialog_bg, nil, nil), 
-       TelescopeSelection = hi(common.selected_fg, common.selected_bg, nil, nil),
-  TelescopeSelectionCaret = hi(common.fg, common.selected_fg, nil, nil),
-  TelescopeMultiSelection = hi(common.highlight_fg, common.highlight_bg, nil, nil),
-        TelescopeMatching = hi(common.highlight_g, common.highlight_bg, nil, nil),
+local telescope_set = {
+          TelescopeNormal = dialog,
+          TelescopeBorder = dialogborder, 
+       TelescopeSelection = selected,
+  TelescopeSelectionCaret = hi(normal.fg, selected.bg, nil, nil),
+  TelescopeMultiSelection = selected,
+        TelescopeMatching = highlighted,
 }
 
-local scheme = {
+local scheme_set = {
          SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
         SpellCap = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
        SpellRare = hi(nil, nil, 'undercurl', fg.diagnostichint),
@@ -422,9 +428,9 @@ M.colorscheme = function()
   end
   vim.o.background = 'light'
   vim.o.termguicolors = true
-  apply_set(ui)
-  apply_set(scheme)
-  apply_set(telescope)
+  apply_set(ui_set)
+  apply_set(scheme_set)
+  apply_set(telescope_set)
 --  for group, style in pairs(scheme) do
  --   if (type(style) == 'string') then
   --    link(group, style)
