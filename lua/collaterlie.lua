@@ -70,38 +70,28 @@ local bg = {
   syn_keyword2 = '#fffdfa',
 }
 
-normal = hi('#432b04', '#fefefd', nil, nil)
+normal = hi('#432b04', '#fefefd', nil, nil) -- Default text in edit area
+gutter = hi(normal.fg, '#f9f8f5', nil, nil) -- numbering, gitsigns, and others inside the edit area
+external = hi('#801010', '#ebeae7', nil, nil) -- Outside the edit area: tabline, EndOfBuffer
 dialog = hi(normal.fg, '#fbf9e8', nil, nil)
 dialogborder = hi('#7f5107', dialog.bg, nil, nil)
 selected = hi('#484848', '#fefe50', nil, nil)
 highlighted = hi('#484848', '#cbff97', nil, nil)
+diagerror = hi('#e31c1c', '#fddddd', nil, nil)
+diagwarn = hi('#7f7f03', '#fefedc', nil, nil)
+diaghint = hi('#780f81', '#f9defc', nil, nil)
+diaginfo = hi('#117980', '#ddfafc', nil, nil)
+diagok = hi('#0f801e', '#defbe1', nil, nil)
+diffaddsign = hi('#0f801e', '#defbe1', nil, nil) 
+diffdeletesign = hi('#801010', '#fddddd', nil, nil)
+diffchangesign = hi('#780f81', '#f9defc', nil, nil)
+diffchangetext = hi(nil, '#f9defc', undercurl, '#780f81')
 
-common = {
-  fg = '#432b04',
-  gutter_bg = '#f9f8f5',
-  external_bg = '#ebeae7',
-  highlight_fg = '#484848',
-  highlight_bg = '#cbff97',
-  selected_fg = '#484848',
-  selected_bg = '#fefe50',
-  dialog_bg = '#f8f8e0',
-  dialogborder = '#7f5107',
-  diagerror_fg = '#e31c1c',
-  diagerror_bg = '#fddddd',
-  diagwarn_fg = '#7f7f03',
-  diagwarn_bg = '#fefedc',
-  diaginfo_fg = '#117980',
-  diaginfo_bg = '#ddfafc',
-  diaghint_fg = '#780f81',
-  diaghint_bg = '#f9defc',
-  diagok_fg = '#0f801e',
-  diagok_bg = '#defbe1',
-}
+-- For help with the highlight groups, see: https://github.com/casr/vim-colors-reference
 
-
-local ui_set = {
+local ui_group = {
           Normal = normal, 
-        NormalNC = hi(common.fg, common.gutter_bg, nil, nil),  
+        NormalNC = gutter,  
          -- Normal text in non-current windows, will be used as the background when a dialog is shown
 
           Cursor = hi('#000000', '#f1990e', nil, nil), -- for the cursor highlights to work, 
@@ -115,28 +105,32 @@ local ui_set = {
     CursorColumn = hi(nil, '#fef8e8', nil, nil),   -- for when cursorcolumn is set
       CursorLine = hi(nil, '#fef8e8', nil, nil),     -- for when cursorline is set
 
-          LineNr = hi(normal.fg, common.gutter_bg, 'italic', nil),
+          LineNr = hi(normal.fg, gutter.bg, 'italic', nil),
     CursorLineNr = hi('#111111', '#fee8b8', 'bold,italic', nil),
-      SignColumn = hi(nil, common.gutter_bg, nil, nil),
+      SignColumn = hi(nil, gutter.bg, nil, nil),
   CursorLineSign = hi(nil, '#fee8b8', nil, nil), 
 
       StatusLine = hi('#fdfdfc', '#7f5107', nil, nil), -- Irrelevant if using something like lualine
-    StatusLineNC = hi(common.fg, '#f0e2d8', nil, nil),
+    StatusLineNC = hi(normal.fg, '#f0e2d8', nil, nil),
+
+         MsgArea = gutter,
 
     QuickFixLine = hi(nil, '#fddddd', nil, nil),
     
     WinSeparator = hi('#7f5107', '#f9f9f5', nil, nil),
+    VertSplit = 'WinSeparator',
           
-          WinBar = hi(nil, common.gutter_bg, nil, nil),
+          WinBar = hi(nil, gutter.bg, nil, nil),
         WinBarNC = hi(nil, nil, nil, nil),
 
-         Tabline = hi('#801010', common.external_bg, 'italic', nil),
-     TabLineFill = hi(nil, common.external_bg, nil, nil),
-      TabLineSel = hi('#801010', nil, 'bold,italic', nil),
+         Tabline = hi(external.fg, external.bg, 'italic', nil),
+     TabLineFill = external,
+      TabLineSel = hi(external.fg, nil, 'bold,italic', nil),
+           Title = hi(external.fg, nil, nil, nil), -- number in a tab with more than one window
 
-      MatchParen = hi(nil, common.highlight_bg, nil, nil),
+      MatchParen = hi(nil, highlighted.bg, nil, nil),
 
-     EndOfBuffer = hi(nil, common.external_bg, nil, nil),    -- Bottom of screen when scrolled up
+     EndOfBuffer = external,    -- Bottom of screen when scrolled up
          NonText = hi('#f4a3a3', nil, nil, nil), 
       Whitespace = hi('#070e44', nil, nil, nil),
 
@@ -148,24 +142,75 @@ local ui_set = {
           Folded = hi('#0f801e', '#fefedc', nil, nil),
       FoldColumn = hi('#0f801e', '#fefedc', 'bold', nil),
 
-          Search = hi(common.highlight_fg, common.highlight_bg, nil, nil),
-       CurSearch = hi(common.highlight_fg, common.highlight_bg, 'bold', nil),
-       IncSearch = hi(common.highlight_fg, 'bold', nil),
+          Search = highlighted,
+       CurSearch = hi(highlighted.fg, highlighted.bg, 'bold', nil),
+       IncSearch = hi(highlighted.fg, highlighted.bg, 'bold', nil),
 
-           Pmenu = hi(dialog.fg, dialog.bg, nil, nil), -- For the popup menu and the completion dialogs
-        PmenuSel = hi(common.selected_fg, common.selected_bg, nil, nil),
-    PmenuSelBold = hi(common.selected_fg, common.selected_bg, 'bold', nil),
+           Pmenu = dialog, 
+        PmenuSel = selected,
+    PmenuSelBold = hi(selected.fg, selected.bg, 'bold', nil),
       PmenuThumb = hi(nil, '#f0e0a0', nil, nil), -- Only observed this in completion dialogs
        PmenuSbar = hi(nil, '#f8f0d8', nil, nil),
 
-        ErrorMsg = hi('#fefedc', '#e31c1c', 'bold', nil),   -- error messages displayed on the command line
-         MoreMsg = hi('#000000', '#fddddd', nil, nil),
-      WarningMsg = hi('#7f5107', '#f4a3a3', nil, nil),
-         ModeMsg = hi('#000000', '#f8d59e', nil, nil),
+       NormalFloat = dialog,
+       FloatTitle = hi(normal.fg, nil, 'bold' ,nil),
+       FloatBorder = dialogborder,
+       FloatShadow = hi(nil, dialogborder.fg, nil, nil), -- background is blended to form the shadow
 
+        ErrorMsg = hi('#fefedc', '#e31c1c', 'bold', nil),   -- error messages displayed on the command line
+      WarningMsg = hi('#7f5107', '#f4a3a3', nil, nil),
+         MoreMsg = hi('#000000', '#fddddd', nil, nil),
+        Question = 'MoreMsg',
+         ModeMsg = hi('#202020', '#f8d59e', nil, nil),
+         
+        SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
+        SpellCap = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
+       SpellRare = hi(nil, nil, 'undercurl', fg.diagnostichint),
+      SpellLocal = hi(nil, nil, 'undercurl', fg.diagnostichint),
+
+       Directory = hi('#192ce2', nil, nil, nil),
+
+         DiffAdd = diffaddsign,
+      DiffDelete = diffdeletesign,
+      DiffChange = diffchangesign,
+        DiffText = diffchangetext,
+
+      SpecialKey = hi(p.green.dark1, nil, nil, nil),
 }
 
-local telescope_set = {
+local diagnostic_group = {
+             DiagnosticError = diagerror,
+              DiagnosticWarn = diagwarn,
+              DiagnosticInfo = diaginfo,
+              DiagnosticHint = diaghint,
+                DiagnosticOk = diagok,
+
+    DiagnosticUnderlineError = hi(nil, nil, 'undercurl', '#e31c1c'),
+     DiagnosticUnderlineWarn = hi(nil, nil, 'undercurl', '#f1990e'),
+     DiagnosticUnderlineInfo = hi(nil, nil, 'undercurl', '#1fe0ed'),
+     DiagnosticUnderlineHint = hi(nil, nil, 'undercurl', '#d319e2'),
+       DiagnosticUnderlineOk = hi(nil, nil, 'undercurl', '#19e233'),
+
+  DiagnosticVirtualTextError = diagerror, 
+   DiagnosticVirtualTextWarn = diagwarn,
+   DiagnosticVirtualTextInfo = diaginfo,
+   DiagnosticVirtualTextHint = diaghint,
+     DiagnosticVirtualTextOk = diagok,
+  
+  DiagnosticFloatingError = hi('#ffff00', '#000000', nil, nil),  -- Can be observed with :lua vim.diagnostic.open_float() (assuming you there are diagnostics)
+   DiagnosticFloatingWarn = diagwarn,
+   DiagnosticFloatingInfo = diaginfo,
+   DiagnosticFloatingHint = diaghint,
+     DiagnosticFloatingOk = diagok,
+  
+  DiagnosticSignError = diagerror, 
+   DiagnosticSignWarn = diagwarn,
+   DiagnosticSignInfo = diaginfo,
+   DiagnosticSignHint = diaghint,
+     DiagnosticSignOk = diagok,
+}
+
+local telescope_group = {
           TelescopeNormal = dialog,
           TelescopeBorder = dialogborder, 
        TelescopeSelection = selected,
@@ -174,64 +219,17 @@ local telescope_set = {
         TelescopeMatching = highlighted,
 }
 
-local scheme_set = {
-         SpellBad = hi(nil, bg.diagnosticerror, 'undercurl', fg.diagnosticerror),
-        SpellCap = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
-       SpellRare = hi(nil, nil, 'undercurl', fg.diagnostichint),
-      SpellLocal = hi(nil, nil, 'undercurl', fg.diagnostichint),
+local scheme_group = {
 
-       Directory = hi(fg.directory, nil, nil, nil),
-
-         DiffAdd = hi(fg.addition, bg.addition, nil, nil),
-      DiffDelete = hi(fg.deletion, bg.deletion, nil, nil),
-      DiffChange = hi(fg.change, bg.change, nil, nil),
-        DiffText = hi(fg.diff, bg.diff, 'underline', fg.diff),
-
-      SpecialKey = hi(p.green.dark1, nil, nil, nil),
     
   
-        Question = hi(p.grey.black, p.orange.vibrant, nil, nil),
     MsgSeparator = hi(p.grey.white, p.grey.dark1, nil, nil),
-           Title = hi(p.orange.vibrant, nil, nil, nil),
+         --  Title = hi(p.orange.vibrant, nil, nil, nil),
         WildMenu = hi(p.grey.black, p.yellow.pale, nil, nil),
 
             Todo = hi(p.orange.dark1, p.yellow.light, 'bold', nil),
 
--- Telescope  ===============================================================================
-
-
 -- ================== Diagnostic =========================
-
-         DiagnosticError = hi(fg.diagnosticerror, bg.diagnosticerror, nil, nil),
-          DiagnosticWarn = hi(fg.diagnosticwarn, bg.diagnosticwarn, nil, nil),
-          DiagnosticInfo = hi(fg.diagnosticinfo, bg.diagnosticinfo, nil, nil),
-          DiagnosticHint = hi(fg.diagnostichint, bg.diagnostichint, nil, nil),
-            DiagnosticOk = hi(fg.diagnosticok, bg.diagnosticok, nil, nil),
-
-    DiagnosticUnderlineError = hi(nil, nil, 'undercurl', fg.diagnosticerror),
-     DiagnosticUnderlineWarn = hi(nil, nil, 'undercurl', fg.diagnosticwarn),
-     DiagnosticUnderlineInfo = hi(nil, nil, 'undercurl', fg.diagnosticinfo),
-     DiagnosticUnderlineHint = hi(nil, nil, 'undercurl', fg.diagnostichint),
-       DiagnosticUnderlineOk = hi(nil, nil, 'undercurl', fg.diagnosticok),
-
-  DiagnosticVirtualTextError = 'DiagnosticError', 
-   DiagnosticVirtualTextWarn = 'DiagnosticWarn',
-   DiagnosticVirtualTextInfo = 'DiagnosticInfo',
-   DiagnosticVirtualTextHint = 'DiagnosticHint',
-     DiagnosticVirtualTextOk = 'DiagnosticOk',
-  
-  DiagnosticFloatingError = 'DiagnosticError', 
-   DiagnosticFloatingWarn = 'DiagnosticWarn',
-   DiagnosticFloatingInfo = 'DiagnosticInfo',
-   DiagnosticFloatingHint = 'DiagnosticHint',
-     DiagnosticFloatingOk = 'DiagnosticOk',
-  
-  DiagnosticSignError = 'DiagnosticError', 
-   DiagnosticSignWarn = 'DiagnosticWarn',
-   DiagnosticSignInfo = 'DiagnosticInfo',
-   DiagnosticSignHint = 'DiagnosticHint',
-     DiagnosticSignOk = 'DiagnosticOk',
-
 -- ================== DAP =========================
 
                       DapSign = hi(p.orange.vibrant, p.grey.pale, nil, nil),
@@ -428,9 +426,10 @@ M.colorscheme = function()
   end
   vim.o.background = 'light'
   vim.o.termguicolors = true
-  apply_set(ui_set)
-  apply_set(scheme_set)
-  apply_set(telescope_set)
+  apply_set(ui_group)
+  apply_set(scheme_group)
+  apply_set(diagnostic_group)
+  apply_set(telescope_group)
 --  for group, style in pairs(scheme) do
  --   if (type(style) == 'string') then
   --    link(group, style)
