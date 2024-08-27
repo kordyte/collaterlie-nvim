@@ -191,8 +191,12 @@ local telescope_group = {
 
 
 
--- Treesitter Capture Groups: https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md
+-- Treesitter Capture Groups: https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md#highlights
+-- The above site lists some of the capture groups observed in practice, or what I have guessed might
+-- occur in different languages. If it's not in the list, it's marked NSTCG (not standard treesitter capture group)
+--
 -- LSP Groups Semantic Tokens: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_semanticTokens
+--
 --
 -- Both TreeSitter and LSP can match. Priority is used in Neovim to decide which
 -- one is applied last.
@@ -205,101 +209,116 @@ local telescope_group = {
 -- LSP only provides type and mod, the typemod is a Neovim thing to allow
 -- you to do specific things for a combination
 
-syn_literal_string = hi('#08440f', nil, nil, nil)
-syn_literal_string_escape = hi('#0f801e', nil, 'bold', nil)
-syn_literal_string_special = literal_string_escape
-syn_literal_regex = hi('#0f801e', nil, nil, nil)
-syn_literal_character = hi('#0f801e', nil, nil, nil)
-syn_literal_character_special = hi('#0f801e', nil, 'bold', nil)
-syn_literal_number = hi("#0f801e", nil, nil, nil)
-syn_literal_boolean = hi("#0f801e", nil, nil, nil)
-syn_literal_float = hi("#0f801e", nil, nil, nil)
+syn_literal1 = hi('#0f801e', nil, nil, nil)
+syn_literal2 = hi('#08440f', nil, nil, nil)
+syn_literal3 = hi(syn_literal1.fg, '#defbe1', nil, nil) -- Atoms and symbols 
 
-syn_variable = hi('#410745', nil, nil, nil)
-syn_variable_builtin = hi('#780f81', nil, nil, nil) 
-syn_parameter = hi('#410745', '#fffaff', nil, nil)
-syn_field = hi('#410745', nil, nil, nil)
-syn_property = hi('#410745', nil, nil, nil)
+syn_variable1 = hi('#410745', nil, nil, nil) 
+syn_variable2 = hi('#780f81', nil, nil, nil)
+syn_variable3 = hi('#410745', '#fffaff', nil, nil)
 
-syn_namespace = hi('#08440f', nil, nil, nil)
+syn_constant1 = hi('#08440f', nil, nil, nil) 
+syn_constant2 = hi('#0f801e', nil, nil, nil)
+
+syn_type1 = hi('#117980', nil, nil, nil)
+syn_type2 = hi('#093e43', nil, nil, nil)
+syn_type3 = hi('#117980', '#f6fefe', nil, nil)
+
+syn_module1 = hi('#08440f', nil, nil, nil)
 
 syn_punctuation = normal
 syn_punctuation_delimiter = normal
 syn_punctuation_bracket = hi('#780f81', nil, nil)
 syn_punctuation_special = hi('#0e187f', nil, nil)
-syn_operator = hi('#0e187f', nil, nil, nil)
+syn_operator = hi('#0e187f', nil, nil, nil) -- operators expressed as symbols, e.g. + 
 
-syn_kw1 = hi('#070e44', '#fafaff', nil, nil)
-syn_kw2 = hi('#0e187f', '#fffdfa', nil, nil)
-syn_kw1_2 = hi(syn_kw1.fg, syn_kw2.bg, nil, nil)
-syn_kw2_1 = hi(syn_kw2.fg, syn_kw1.bg, nil, nil)
+syn_keyword1 = hi('#070e44', '#fafaff', nil, nil)
+syn_keyword2 = hi('#0e187f', '#fffdfa', nil, nil)
+syn_keyword3 = hi(syn_keyword1.fg, syn_keyword1.bg, nil, nil)
+syn_keyword4 = hi(syn_keyword2.fg, syn_keyword2.bg, nil, nil)
 
-syn_keyword = syn_kw1
-syn_kw_conditional = syn_kw1 
-syn_kw_repeat = syn_kw1
-syn_kw_type = syn_kw1
-syn_kw_label = hi(syn_kw2.fg, syn_kw2.bg, 'bold', nil)
-syn_kw_debug = hi(syn_kw2.fg, syn_kw2.bg, 'bold', nil)
-syn_kw_return = syn_kw2_1
-syn_kw_function = syn_kw2_1
-syn_kw_coroutine = syn_kw2_1
-syn_kw_directive = syn_kw2
-syn_kw_exception = syn_kw1
-syn_kw_import = syn_kw1
-syn_kw_modifier = syn_kw1_2
+syn_function = hi('#432b04', nil, nil, nil)
+syn_function_call = hi('#432b04', nil, nil, nil)
+syn_function_builtin = hi('#7f5107', nil, nil, nil)
+syn_method = hi('#533b04', nil, nil, nil)
+syn_method_call = hi('#533b04', nil, nil, nil)
+syn_method_builtin = hi('#7f5107', nil, nil, nil)
 
+syn_diff_plus = diffaddsign
+syn_diff_minus = diffdeletesign
+syn_diff_delta = diffchangesign
 
 local lsp_group = {
       ['@lsp.type.namespace'] = syn_namespace,
-           ['@lsp.type.type'] = nyi,
-          ['@lsp.type.class'] = nyi,
-           ['@lsp.type.enum'] = nyi,
-      ['@lsp.type.interface'] = nyi,
-         ['@lsp.type.struct'] = nyi,
-  ['@lsp.type.typeParameter'] = nyi,
-      ['@lsp.type.parameter'] = syn_parameter,
-       ['@lsp.type.variable'] = syn_variable,
-       ['@lsp.type.property'] = syn_property,
-     ['@lsp.type.enumMember'] = nyi,
+           ['@lsp.type.type'] = syn_type1, 
+          ['@lsp.type.class'] = syn_type1,
+           ['@lsp.type.enum'] = syn_type1,
+      ['@lsp.type.interface'] = hi(syn_type1.fg, nil, 'italic', nil),
+         ['@lsp.type.struct'] = syn_type1,
+  ['@lsp.type.typeParameter'] = syn_type3,
+      ['@lsp.type.parameter'] = syn_variable3,
+       ['@lsp.type.variable'] = syn_variable1,
+       ['@lsp.type.property'] = syn_variable2,
+     ['@lsp.type.enumMember'] = syn_type2,
           ['@lsp.type.event'] = nyi,
-       ['@lsp.type.function'] = nyi,
-         ['@lsp.type.method'] = nyi,
+       ['@lsp.type.function'] = syn_function,
+         ['@lsp.type.method'] = syn_method,
           ['@lsp.type.macro'] = nyi,
-        ['@lsp.type.keyword'] = syn_keyword,
+        ['@lsp.type.keyword'] = syn_keyword1,
        ['@lsp.type.modifier'] = nyi,
         ['@lsp.type.comment'] = nyi,
-         ['@lsp.type.string'] = syn_literal_string,
-         ['@lsp.type.number'] = syn_literal_number,
-         ['@lsp.type.regexp'] = syn_literal_regex,
+         ['@lsp.type.string'] = syn_literal2,
+         ['@lsp.type.number'] = syn_literal1,
+         ['@lsp.type.regexp'] = syn_literal1,
        ['@lsp.type.operator'] = syn_operator,
       ['@lsp.type.decorator'] = nyi,
 }
 
 local treesitter_group = {
-                       ['@string'] = syn_literal_string,
-                ['@string.escape'] = syn_literal_string_escape,
-               ['@string.special'] = syn_literal_string_special,
-                ['@string.regexp'] = syn_literal_regex,
-                    ['@character'] = syn_literal_character,
-            ['@character.special'] = syn_literal_character_special,
-                      ['@boolean'] = syn_literal_boolean,
-                       ['@number'] = syn_literal_number,
-                 ['@number.float'] = syn_literal_float,
-                        ['@float'] = syn_literal_float,
+                      ['@boolean'] = syn_literal1,
+                       ['@number'] = syn_literal1,
+                 ['@number.float'] = syn_literal1,
+                        ['@float'] = syn_literal1,   -- NTSCG
+                       ['@string'] = syn_literal2,
+                ['@string.escape'] = hi(syn_literal1.fg, nil, 'bold', nil),  -- escape sequences
+         ['@string.documentation'] = syn_literal1, -- Strings like Python doc strings
+               ['@string.special'] = syn_literal2, -- special strings such as dates
+        ['@string.special.symbol'] = syn_literal3, -- Atoms and symbols
+           ['@string.special.url'] = hi('#192ce2', nil, nil, nil),
+          ['@string.special.path'] = hi('#192ce2', nil, nil, nil),
+                ['@string.regexp'] = syn_literal1,
+                    ['@character'] = syn_literal1,
+            ['@character.special'] = hi(syn_literal1.fg, nil, 'bold', nil),
 
-                     ['@variable'] = syn_variable,
-             ['@variable.builtin'] = syn_variable_builtin,
-           ['@variable.parameter'] = syn_parameter,
-                    ['@parameter'] = syn_parameter,
-          ['@parameter.reference'] = syn_parameter,
-   ['@variable.parameter.builtin'] = syn_parameter,
-            ['@parameter.builtin'] = syn_parameter,
-              ['@variable.member'] = syn_field,
-                       ['@member'] = syn_field,
-               ['@variable.field'] = syn_field,
-                        ['@field'] = syn_field,
+                     ['@variable'] = syn_variable1,
+             ['@variable.builtin'] = syn_variable2,
+           ['@variable.parameter'] = syn_variable3,
+                    ['@parameter'] = syn_variable3, -- NSTCG
+          ['@parameter.reference'] = syn_variable3, -- NSTCG
+   ['@variable.parameter.builtin'] = syn_variable3,
+            ['@parameter.builtin'] = syn_variable3, -- NSTCG
+              ['@variable.member'] = syn_variable2,
+                       ['@member'] = syn_variable2, -- NSTCG
+               ['@variable.field'] = syn_variable2, -- NSTCG
+                        ['@field'] = syn_variable2, -- NSTCG
+                     ['@property'] = syn_variable2,
+
+                     ['@constant'] = syn_constant1,
+             ['@constant.builtin'] = syn_constant2,
+
+                   ['@type'] = syn_type1,
+        ['@type.definition'] = syn_type1,
+         ['@type.qualifier'] = syn_type2, 
+           ['@type.builtin'] = syn_type2, 
+              ['@structure'] = syn_type1,
+              ['@interface'] = hi(syn_type1.fg, nil, 'italic', nil),
+            ['@constructor'] = syn_type1,
+           ['@storageclass'] = syn_type2,
+
                     
-                    ['@namespace'] = syn_namespace,
+                    ['@namespace'] = syn_module1,
+                       ['@module'] = syn_module1,
+               ['@module.builtin'] = syn_module1,
 
                   ['@punctuation'] = syn_punctuation,
         ['@punctuation.delimiter'] = syn_punctuation_delimiter,
@@ -307,64 +326,54 @@ local treesitter_group = {
           ['@punctuation.special'] = syn_punctuation_special,
                      ['@operator'] = syn_operator,
 
-                      ['@keyword'] = syn_keyword,
-            ['@keyword.coroutine'] = syn_kw_coroutine,
-             ['@keyword.function'] = syn_kw_function,
-             ['@keyword.operator'] = syn_operator,
-                     ['@operator'] = syn_operator,
-               ['@keyword.import'] = syn_kw_import,
-                 ['@keyword.type'] = syn_kw_type,
-             ['@keyword.modifier'] = syn_kw_modifier,
-               ['@keyword.repeat'] = syn_kw_repeat,
-                       ['@repeat'] = syn_kw_repeat,
-               ['@keyword.return'] = syn_kw_return,
-                ['@keyword.debug'] = syn_kw_debug,
-            ['@keyword.exception'] = syn_kw_exception,
-                    ['@exception'] = syn_kw_exception,
-          ['@keyword.conditional'] = syn_kw_conditional,
-                  ['@conditional'] = syn_kw_conditional,
-  ['@keyword.conditional.ternary'] = syn_kw_conditional,
-            ['@keyword.directive'] = syn_kw_directive,
-     ['@keyword.directive.define'] = syn_kw_directive,
+                      ['@keyword'] = syn_keyword1,
+            ['@keyword.coroutine'] = syn_keyword4,
+             ['@keyword.function'] = syn_keyword3,
+             ['@keyword.operator'] = syn_keyword1, -- named operators, e.g. and
+               ['@keyword.import'] = syn_keyword1,
+                 ['@keyword.type'] = syn_keyword1,
+             ['@keyword.modifier'] = syn_keyword3,
+               ['@keyword.repeat'] = syn_keyword1,
+                       ['@repeat'] = syn_keyword1,
+               ['@keyword.return'] = syn_keyword4,
+                ['@keyword.debug'] = hi(syn_keyword2.fg, syn_keyword2.bg, 'bold', nil),
+            ['@keyword.exception'] = syn_keyword1,
+                    ['@exception'] = syn_keyword1,
+          ['@keyword.conditional'] = syn_keyword1,
+                  ['@conditional'] = syn_keyword1,
+  ['@keyword.conditional.ternary'] = syn_keyword1,
+                        ['@label'] = hi(syn_keyword2.fg, syn_keyword2.bg, 'bold', nil),
+            ['@keyword.directive'] = syn_keyword2,
+     ['@keyword.directive.define'] = syn_keyword2,
 
-                     ['@constant'] = nyi,
-             ['@constant.builtin'] = nyi,
                ['@constant.macro'] = nyi,
-                       ['@module'] = nyi,
-               ['@module.builtin'] = nyi,
-                        ['@label'] = nyi,
-
-         ['@string.documentation'] = nyi,
-        ['@string.special.symbol'] = nyi,
-           ['@string.special.url'] = nyi,
-          ['@string.special.path'] = nyi,
 
 
+                     ['@function'] = syn_function,
+             ['@function.builtin'] = syn_function_builtin,
+                ['@function.call'] = syn_function_call,
+              ['@function.method'] = syn_method,
+         ['@function.method.call'] = syn_method_call,
+      ['@function.method.builtin'] = syn_method_builtin,
+                       ['@method'] = syn_method,
+                  ['@method.call'] = syn_method_call,
+               ['@method.builtin'] = syn_method_builtin,
+               ['@function.macro'] = nyi,
 
-                         ['@type'] = nyi,
-                 ['@type.builtin'] = nyi,
-              ['@type.definition'] = nyi,
-               ['@type.qualifier'] = nyi,
-                 ['@storageclass'] = nyi,
+
+
+
+
 
                     ['@attribute'] = nyi,
             ['@attribute.builtin'] = nyi,
-                     ['@property'] = nyi,
 
-                     ['@function'] = nyi,
-             ['@function.builtin'] = nyi,
-                ['@function.call'] = nyi,
-               ['@function.macro'] = nyi,
 
 ['@include'] = nyi,
 ['@define'] = nyi,
 ['@preproc'] = nyi,
 
 
-              ['@function.method'] = nyi,
-         ['@function.method.call'] = nyi,
-
-                  ['@constructor'] = nyi,
 
 
 
@@ -405,9 +414,9 @@ local treesitter_group = {
           ['@markup.list.checked'] = nyi,
         ['@markup.list.unchecked'] = nyi,
                  
-                    ['@diff.plus'] = nyi,
-                   ['@diff.minus'] = nyi,
-                   ['@diff.delta'] = nyi,
+                    ['@diff.plus'] = syn_diff_plus,
+                   ['@diff.minus'] = syn_diff_minus,
+                   ['@diff.delta'] = syn_diff_delta,
                  
                           ['@tag'] = nyi,
                   ['@tag.builtin'] = nyi,
@@ -520,8 +529,6 @@ local scheme_group = {
            ['@text.warning'] = 'WarningMsg',
             ['@text.danger'] = 'Error',
   
-               ['@constant'] = hi(fg.syn_literal2, nil, nil, nil), 
-       ['@constant.builtin'] = hi(fg.syn_literal1, nil, nil, nil),
                  ['@string'] = hi(fg.syn_literal2, nil, nil, nil),
           ['@string.escape'] = hi(fg.syn_literal1, nil, "bold", nil),
          ['@string.special'] = hi(fg.syn_literal1, nil, "bold", nil),
