@@ -211,7 +211,7 @@ local telescope_group = {
 
 syn_literal1 = hi('#0f801e', nil, nil, nil)
 syn_literal2 = hi('#08440f', nil, nil, nil)
-syn_literal3 = hi(syn_literal1.fg, '#defbe1', nil, nil) -- Atoms and symbols 
+syn_literal3 = hi(syn_literal1.fg, '#defbe1', nil, nil) 
 
 syn_variable1 = hi('#410745', nil, nil, nil) 
 syn_variable2 = hi('#780f81', nil, nil, nil)
@@ -226,27 +226,19 @@ syn_type3 = hi('#117980', '#f6fefe', nil, nil)
 
 syn_module1 = hi('#08440f', nil, nil, nil)
 
-syn_punctuation = normal
-syn_punctuation_delimiter = normal
-syn_punctuation_bracket = hi('#780f81', nil, nil)
-syn_punctuation_special = hi('#0e187f', nil, nil)
-syn_operator = hi('#0e187f', nil, nil, nil) -- operators expressed as symbols, e.g. + 
-
 syn_keyword1 = hi('#070e44', '#fafaff', nil, nil)
 syn_keyword2 = hi('#0e187f', '#fffdfa', nil, nil)
 syn_keyword3 = hi(syn_keyword1.fg, syn_keyword1.bg, nil, nil)
 syn_keyword4 = hi(syn_keyword2.fg, syn_keyword2.bg, nil, nil)
 
-syn_function = hi('#432b04', nil, nil, nil)
-syn_function_call = hi('#432b04', nil, nil, nil)
-syn_function_builtin = hi('#7f5107', nil, nil, nil)
-syn_method = hi('#533b04', nil, nil, nil)
-syn_method_call = hi('#533b04', nil, nil, nil)
-syn_method_builtin = hi('#7f5107', nil, nil, nil)
+syn_function1 = hi('#432b04', nil, nil, nil)
+syn_function2 = hi('#533b04', nil, nil, nil)
+syn_function3 = hi('#7f5107', nil, nil, nil)
 
-syn_diff_plus = diffaddsign
-syn_diff_minus = diffdeletesign
-syn_diff_delta = diffchangesign
+syn_macro1 = hi('#801010', nil, nil, nil)
+syn_macro2 = hi('#801010', '#fffafa', nil, nil)
+
+syn_metadata1 = hi('#818181', '#fffafa', 'bold', nil)
 
 local lsp_group = {
       ['@lsp.type.namespace'] = syn_namespace,
@@ -260,18 +252,18 @@ local lsp_group = {
        ['@lsp.type.variable'] = syn_variable1,
        ['@lsp.type.property'] = syn_variable2,
      ['@lsp.type.enumMember'] = syn_type2,
-          ['@lsp.type.event'] = nyi,
-       ['@lsp.type.function'] = syn_function,
-         ['@lsp.type.method'] = syn_method,
-          ['@lsp.type.macro'] = nyi,
+          ['@lsp.type.event'] = syn_type2,
+       ['@lsp.type.function'] = syn_function1,
+         ['@lsp.type.method'] = syn_function2,
+          ['@lsp.type.macro'] = syn_macro1,
         ['@lsp.type.keyword'] = syn_keyword1,
        ['@lsp.type.modifier'] = nyi,
         ['@lsp.type.comment'] = nyi,
          ['@lsp.type.string'] = syn_literal2,
          ['@lsp.type.number'] = syn_literal1,
          ['@lsp.type.regexp'] = syn_literal1,
-       ['@lsp.type.operator'] = syn_operator,
-      ['@lsp.type.decorator'] = nyi,
+       ['@lsp.type.operator'] = hi('#0e187f', nil, nil, nil),
+      ['@lsp.type.decorator'] = syn_metadata1,
 }
 
 local treesitter_group = {
@@ -305,26 +297,26 @@ local treesitter_group = {
 
                      ['@constant'] = syn_constant1,
              ['@constant.builtin'] = syn_constant2,
+               ['@constant.macro'] = syn_macro1,
 
-                   ['@type'] = syn_type1,
-        ['@type.definition'] = syn_type1,
-         ['@type.qualifier'] = syn_type2, 
-           ['@type.builtin'] = syn_type2, 
-              ['@structure'] = syn_type1,
-              ['@interface'] = hi(syn_type1.fg, nil, 'italic', nil),
-            ['@constructor'] = syn_type1,
-           ['@storageclass'] = syn_type2,
+                         ['@type'] = syn_type1,
+              ['@type.definition'] = syn_type1,
+               ['@type.qualifier'] = syn_type2, 
+                 ['@type.builtin'] = syn_type2, 
+                    ['@structure'] = syn_type1,
+                    ['@interface'] = hi(syn_type1.fg, nil, 'italic', nil),
+                  ['@constructor'] = syn_type1,
+                 ['@storageclass'] = syn_type2,
 
-                    
                     ['@namespace'] = syn_module1,
                        ['@module'] = syn_module1,
                ['@module.builtin'] = syn_module1,
 
-                  ['@punctuation'] = syn_punctuation,
-        ['@punctuation.delimiter'] = syn_punctuation_delimiter,
-          ['@punctuation.bracket'] = syn_punctuation_bracket,
-          ['@punctuation.special'] = syn_punctuation_special,
-                     ['@operator'] = syn_operator,
+                  ['@punctuation'] = normal,
+        ['@punctuation.delimiter'] = normal,
+          ['@punctuation.bracket'] = hi('#780f81', nil, nil, nil),
+          ['@punctuation.special'] = hi('#0e187f', nil, nil, nil),
+                     ['@operator'] = hi('#0e187f', nil, nil, nil), -- operators expressed as symbols, e.g. + 
 
                       ['@keyword'] = syn_keyword1,
             ['@keyword.coroutine'] = syn_keyword4,
@@ -346,36 +338,21 @@ local treesitter_group = {
             ['@keyword.directive'] = syn_keyword2,
      ['@keyword.directive.define'] = syn_keyword2,
 
-               ['@constant.macro'] = nyi,
+                     ['@function'] = syn_function1,
+             ['@function.builtin'] = syn_function3,
+                ['@function.call'] = syn_function1,
+              ['@function.method'] = syn_function2,
+                       ['@method'] = syn_function2, -- NTSCG
+         ['@function.method.call'] = syn_function2,
+                  ['@method.call'] = syn_function2, -- NTSCG
+      ['@function.method.builtin'] = syn_function3,
+               ['@method.builtin'] = syn_function3, -- NTSCG
+               ['@function.macro'] = syn_macro1,
+                        ['@macro'] = syn_macro1, -- NTSCG
 
-
-                     ['@function'] = syn_function,
-             ['@function.builtin'] = syn_function_builtin,
-                ['@function.call'] = syn_function_call,
-              ['@function.method'] = syn_method,
-         ['@function.method.call'] = syn_method_call,
-      ['@function.method.builtin'] = syn_method_builtin,
-                       ['@method'] = syn_method,
-                  ['@method.call'] = syn_method_call,
-               ['@method.builtin'] = syn_method_builtin,
-               ['@function.macro'] = nyi,
-
-
-
-
-
-
-                    ['@attribute'] = nyi,
-            ['@attribute.builtin'] = nyi,
-
-
-['@include'] = nyi,
-['@define'] = nyi,
-['@preproc'] = nyi,
-
-
-
-
+                   ['@annotation'] = syn_metadata1,
+                    ['@attribute'] = syn_metadata1,
+            ['@attribute.builtin'] = syn_metadata1,
 
 
 
@@ -386,7 +363,27 @@ local treesitter_group = {
               ['@comment.warning'] = nyi,
                  ['@comment.todo'] = nyi,
                  ['@comment.note'] = nyi,
-                 
+
+                          ['@tag'] = nyi,
+                  ['@tag.builtin'] = nyi,
+                ['@tag.attribute'] = nyi,
+                ['@tag.delimiter'] = nyi,
+             ['@text.title'] = hi(fg.syn_text_title, p.green.ghost),
+           ['@text.literal'] = hi(fg.syn_text_literal, p.purple.ghost),
+         ['@text.reference'] = hi(fg.syn_text_reference, nil, nil, nil),
+               ['@text.uri'] = hi(fg.syn_text_uri, p.blue.ghost, nil, nil),
+         ['@text.underline'] = hi(nil, nil, 'underline', nil),
+              ['@text.todo'] = '@todo',
+          ['@text.emphasis'] = hi(nil, nil, 'italic', nil),
+            ['@text.strong'] = hi(nil, nil, 'bold', nil),
+            ['@text.strike'] = hi(nil, nil, 'strikethrough', nil),
+              ['@text.math'] = hi(nil, nil, 'italic', nil),
+       ['@text.environment'] = hi(p.grey.dark1, p.grey.ghost, nil, nil),
+              ['@text.note'] = hi(p.cyan.dark1, nil, nil, nil),
+           ['@text.warning'] = 'WarningMsg',
+            ['@text.danger'] = 'Error',
+
+
                 ['@markup.strong'] = nyi,
                 ['@markup.italic'] = nyi,
          ['@markup.strikethrough'] = nyi,
@@ -414,14 +411,10 @@ local treesitter_group = {
           ['@markup.list.checked'] = nyi,
         ['@markup.list.unchecked'] = nyi,
                  
-                    ['@diff.plus'] = syn_diff_plus,
-                   ['@diff.minus'] = syn_diff_minus,
-                   ['@diff.delta'] = syn_diff_delta,
+                    ['@diff.plus'] = diffaddsign,
+                   ['@diff.minus'] = diffdeletesign,
+                   ['@diff.delta'] = diffchangesign,
                  
-                          ['@tag'] = nyi,
-                  ['@tag.builtin'] = nyi,
-                ['@tag.attribute'] = nyi,
-                ['@tag.delimiter'] = nyi,
 }
 
 local scheme_group = {
