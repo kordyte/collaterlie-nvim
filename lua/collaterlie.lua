@@ -46,11 +46,16 @@ dialog = hi(normal.fg, '#fbf9e8', nil, nil)
 dialogborder = hi('#7f5107', dialog.bg, nil, nil)
 selected = hi('#484848', '#fefe50', nil, nil)
 highlighted = hi('#484848', '#cbff97', nil, nil)
-diagerror = hi('#e31c1c', '#fddddd', nil, nil)
-diagwarn = hi('#7f7f03', '#fefedc', nil, nil)
-diaghint = hi('#780f81', '#f9defc', nil, nil)
-diaginfo = hi('#117980', '#ddfafc', nil, nil)
-diagok = hi('#0f801e', '#defbe1', nil, nil)
+alert_error = hi('#e31c1c', '#fddddd', nil, nil) -- Signs and virtual texts, or other things that are not 'inline' text
+alert_warn = hi('#7f7f03', '#fefedc', nil, nil)
+alert_hint = hi('#780f81', '#f9defc', nil, nil)
+alert_info = hi('#117980', '#ddfafc', nil, nil)
+alert_ok = hi('#0f801e', '#defbe1', nil, nil)
+inline_error = hi('#e31c1c', nil, 'bold', nil) -- Errors that are rendered within a block of text, unlike the alert
+inline_warn = hi('#7f7f03', nil, 'bold', nil)
+inline_hint = hi('#780f81', nil, 'bold', nil)
+inline_info = hi('#117980', nil, 'bold', nil)
+inline_ok = hi('#0f801e', nil, nil, nil)
 diffaddsign = hi('#0f801e', '#defbe1', nil, nil) 
 diffdeletesign = hi('#801010', '#fddddd', nil, nil)
 diffchangesign = hi('#780f81', '#f9defc', nil, nil)
@@ -135,10 +140,10 @@ local ui_group = {
          ModeMsg = hi('#202020', '#f8d59e', nil, nil),
     MsgSeparator = external,
 
-        SpellBad = hi(nil, diagerror.fg, 'undercurl', diagerror.fg),
-        SpellCap = hi(nil, nil, 'undercurl', diagwarn.fg),
-       SpellRare = hi(nil, nil, 'undercurl', diaghint.fg),
-      SpellLocal = hi(nil, nil, 'undercurl', diaghint.fg),
+        SpellBad = hi(nil, alert_error.fg, 'undercurl', alert_error.fg),
+        SpellCap = hi(nil, nil, 'undercurl', alert_warn.fg),
+       SpellRare = hi(nil, nil, 'undercurl', alert_hint.fg),
+      SpellLocal = hi(nil, nil, 'undercurl', alert_hint.fg),
 
        Directory = hi('#192ce2', nil, nil, nil),
 
@@ -149,11 +154,11 @@ local ui_group = {
 }
 
 local diagnostic_group = {
-             DiagnosticError = diagerror,
-              DiagnosticWarn = diagwarn,
-              DiagnosticInfo = diaginfo,
-              DiagnosticHint = diaghint,
-                DiagnosticOk = diagok,
+             DiagnosticError = alert_error,
+              DiagnosticWarn = alert_warn,
+              DiagnosticInfo = alert_info,
+              DiagnosticHint = alert_hint,
+                DiagnosticOk = alert_ok,
 
     DiagnosticUnderlineError = hi(nil, nil, 'undercurl', '#e31c1c'),
      DiagnosticUnderlineWarn = hi(nil, nil, 'undercurl', '#f1990e'),
@@ -161,23 +166,23 @@ local diagnostic_group = {
      DiagnosticUnderlineHint = hi(nil, nil, 'undercurl', '#d319e2'),
        DiagnosticUnderlineOk = hi(nil, nil, 'undercurl', '#19e233'),
 
-  DiagnosticVirtualTextError = diagerror, 
-   DiagnosticVirtualTextWarn = diagwarn,
-   DiagnosticVirtualTextInfo = diaginfo,
-   DiagnosticVirtualTextHint = diaghint,
-     DiagnosticVirtualTextOk = diagok,
+  DiagnosticVirtualTextError = alert_error, 
+   DiagnosticVirtualTextWarn = alert_warn,
+   DiagnosticVirtualTextInfo = alert_info,
+   DiagnosticVirtualTextHint = alert_hint,
+     DiagnosticVirtualTextOk = alert_ok,
   
-     DiagnosticFloatingError = diagerror,  -- Can be observed with :lua vim.diagnostic.open_float() (assuming you there are diagnostics)
-      DiagnosticFloatingWarn = diagwarn,
-      DiagnosticFloatingInfo = diaginfo,
-      DiagnosticFloatingHint = diaghint,
-        DiagnosticFloatingOk = diagok,
+     DiagnosticFloatingError = inline_error,  -- Can be observed with :lua vim.diagnostic.open_float() (assuming you there are diagnostics)
+      DiagnosticFloatingWarn = inline_warn,
+      DiagnosticFloatingInfo = inline_info,
+      DiagnosticFloatingHint = inline_hint,
+        DiagnosticFloatingOk = inline_ok,
   
-         DiagnosticSignError = diagerror, 
-          DiagnosticSignWarn = diagwarn,
-          DiagnosticSignInfo = diaginfo,
-          DiagnosticSignHint = diaghint,
-            DiagnosticSignOk = diagok,
+         DiagnosticSignError = alert_error, 
+          DiagnosticSignWarn = alert_warn,
+          DiagnosticSignInfo = alert_info,
+          DiagnosticSignHint = alert_hint,
+            DiagnosticSignOk = alert_ok,
 }
 
 local telescope_group = {
@@ -240,6 +245,13 @@ syn_macro2 = hi('#801010', '#fffafa', nil, nil)
 
 syn_metadata1 = hi('#818181', '#fffafa', 'bold', nil)
 
+syn_comment = hi('#e9c865', nil, 'italic', nil)
+syn_comment_special = hi('#7f5107', '#fcfb9d', 'bold,italic', nil)
+
+syn_modifier1 = nyi
+
+syn_text_title = hi('#101010', nil, 'underline', nil)
+
 local lsp_group = {
       ['@lsp.type.namespace'] = syn_namespace,
            ['@lsp.type.type'] = syn_type1, 
@@ -267,10 +279,149 @@ local lsp_group = {
 }
 
 local treesitter_group = {
+
+@asm
+@async
+@attribute
+@attribute.builtin
+@auto
+@autoreleasepool
+@available
+@base
+@cast
+@character       
+@character.special
+@charset
+@code
+@conceal
+@constant
+@constant.boolean
+@constant.builtin
+@constant.macro
+@debug 
+@define
+@definition
+@definition.associated
+@definition.constant
+@definition.enum
+@definition.field 
+@definition.function
+@definition.import
+@definition.label
+@definition.macro
+@definition.method
+@definition.namespace
+@definition.parameter
+@definition.type
+@definition.var
+@definition.variable 
+@deprecated
+@diagnostic
+@dynamic
+@each
+@end
+@endcode
+@entry
+@enum"
+@error
+@exception 
+@extend
+@field
+@fini
+@float
+@forward
+@func-name
+@func-name
+@function 
+@function.builtin
+@function.call
+@function.macro 
+@function.method
+@function.spec
+@generic
+@identifier
+@implementation
+@import
+@include
+@indent.auto
+@indent.begin
+@indent.branch
+@indent.dedent
+@indent.end
+@init
+@injection.content
+@injection.language
+@keyframes
+@language
+@lateinit
+@load
+@local.reference
+@media
+@meta
+@none
+@operator              ; symbolic operators (e.g. `+` / `*`)
+@optional
+@packed
+@perl
+@perl
+@prefix
+@preproc               ; various preprocessor directives & shebangs
+@python
+@reference
+@scope
+@see
+@selector
+@source
+@spell
+@storageclass
+@storageclass.lifetime
+@string
+@string.documentation
+@string.escape
+@string.escape
+@string.grammar
+@string.special
+@string.special.grammar
+@string.special.path
+@supports
+@symbol
+@synchronized
+@synthesize
+@tag
+@tag.attribute
+@test
+@text
+@text.danger
+@text.diff.add
+@text.diff.delete
+@text.emphasis
+@text.environment
+@text.environment.name
+@text.literal
+@text.literal
+@text.math
+@text.note
+@text.quote
+@text.reference
+@text.strike
+@text.strong
+@text.underline
+@text.uri
+@text.warning
+@theme
+@type
+@type.builtin
+@type.definition
+@type.qualifier
+@vararg
+@version
+@warn
+
                       ['@boolean'] = syn_literal1,
                        ['@number'] = syn_literal1,
-                 ['@number.float'] = syn_literal1,
-                        ['@float'] = syn_literal1,   -- NTSCG
+               ['@number.builtin'] = syn_literal2,
+               ['@number.special'] = syn_literal2,
+                        ['@float'] = syn_literal1,
                        ['@string'] = syn_literal2,
                 ['@string.escape'] = hi(syn_literal1.fg, nil, 'bold', nil),  -- escape sequences
          ['@string.documentation'] = syn_literal1, -- Strings like Python doc strings
@@ -284,15 +435,14 @@ local treesitter_group = {
 
                      ['@variable'] = syn_variable1,
              ['@variable.builtin'] = syn_variable2,
-           ['@variable.parameter'] = syn_variable3,
-                    ['@parameter'] = syn_variable3, -- NSTCG
-          ['@parameter.reference'] = syn_variable3, -- NSTCG
-   ['@variable.parameter.builtin'] = syn_variable3,
-            ['@parameter.builtin'] = syn_variable3, -- NSTCG
-              ['@variable.member'] = syn_variable2,
-                       ['@member'] = syn_variable2, -- NSTCG
-               ['@variable.field'] = syn_variable2, -- NSTCG
-                        ['@field'] = syn_variable2, -- NSTCG
+               ['@variable.array'] = syn_variable1,
+                ['@variable.hash'] = syn_variable1,
+               ['@variable.local'] = syn_variable1,
+              ['@variable.scalar'] = syn_variable1,
+                    ['@parameter'] = syn_variable3,
+                        ['@param'] = syn_variable3,
+                       ['@member'] = syn_variable2,
+                        ['@field'] = syn_variable2,
                      ['@property'] = syn_variable2,
 
                      ['@constant'] = syn_constant1,
@@ -300,17 +450,22 @@ local treesitter_group = {
                ['@constant.macro'] = syn_macro1,
 
                          ['@type'] = syn_type1,
+                        ['@class'] = syn_type1,
               ['@type.definition'] = syn_type1,
                ['@type.qualifier'] = syn_type2, 
                  ['@type.builtin'] = syn_type2, 
                     ['@structure'] = syn_type1,
                     ['@interface'] = hi(syn_type1.fg, nil, 'italic', nil),
+                        ['@mixin'] = hi(syn_type1.fg, nil, 'italic', nil),
+                     ['@protocol'] = hi(syn_type1.fg, nil, 'italic', nil),
                   ['@constructor'] = syn_type1,
                  ['@storageclass'] = syn_type2,
 
                     ['@namespace'] = syn_module1,
                        ['@module'] = syn_module1,
                ['@module.builtin'] = syn_module1,
+                      ['@package'] = syn_module1,
+                      ['@use'] = syn_module1,
 
                   ['@punctuation'] = normal,
         ['@punctuation.delimiter'] = normal,
@@ -327,10 +482,20 @@ local treesitter_group = {
              ['@keyword.modifier'] = syn_keyword3,
                ['@keyword.repeat'] = syn_keyword1,
                        ['@repeat'] = syn_keyword1,
+                        ['@while'] = syn_keyword1,
                ['@keyword.return'] = syn_keyword4,
+                       ['@return'] = syn_keyword4,
                 ['@keyword.debug'] = hi(syn_keyword2.fg, syn_keyword2.bg, 'bold', nil),
             ['@keyword.exception'] = syn_keyword1,
                     ['@exception'] = syn_keyword1,
+                          ['@try'] = syn_keyword1,
+                        ['@catch'] = syn_keyword1,
+                        ['@throw'] = syn_keyword1,
+                      ['@finally'] = syn_keyword1,
+                       ['@public'] = syn_keyword1,
+                    ['@protected'] = syn_keyword1,
+                      ['@private'] = syn_keyword1,
+               ['@keyword.phaser'] = syn_keyword1,
           ['@keyword.conditional'] = syn_keyword1,
                   ['@conditional'] = syn_keyword1,
   ['@keyword.conditional.ternary'] = syn_keyword1,
@@ -353,23 +518,28 @@ local treesitter_group = {
                    ['@annotation'] = syn_metadata1,
                     ['@attribute'] = syn_metadata1,
             ['@attribute.builtin'] = syn_metadata1,
+                    ['@nodiscard'] = syn_metadata1,
+                     ['@noreturn'] = syn_metadata1
+                     ['@overload'] = syn_metadata1
 
+                      ['@comment'] = syn_comment,
+        ['@comment.documentation'] = syn_comment,
 
+                         ['@todo'] = syn_comment_special,
 
-                      ['@comment'] = nyi,
-        ['@comment.documentation'] = nyi,
+                          ['@tag'] = syn_type1,
+                  ['@tag.builtin'] = syn_type2,
+                ['@tag.attribute'] = syn_variable1,
+                ['@tag.delimiter'] = syn_punctuation,
 
-                ['@comment.error'] = nyi,
-              ['@comment.warning'] = nyi,
-                 ['@comment.todo'] = nyi,
-                 ['@comment.note'] = nyi,
-
-                          ['@tag'] = nyi,
-                  ['@tag.builtin'] = nyi,
-                ['@tag.attribute'] = nyi,
-                ['@tag.delimiter'] = nyi,
-             ['@text.title'] = hi(fg.syn_text_title, p.green.ghost),
-           ['@text.literal'] = hi(fg.syn_text_literal, p.purple.ghost),
+             ['@text.title'] = syn_text_title,
+             ['@text.title.1'] = nyi,
+             ['@text.title.2'] = nyi,
+             ['@text.title.3'] = nyi,
+             ['@text.title.4'] = nyi,
+             ['@text.title.5'] = nyi,
+             ['@text.title.6'] = nyi,
+           ['@text.literal'] = syn_literal1,
          ['@text.reference'] = hi(fg.syn_text_reference, nil, nil, nil),
                ['@text.uri'] = hi(fg.syn_text_uri, p.blue.ghost, nil, nil),
          ['@text.underline'] = hi(nil, nil, 'underline', nil),
@@ -380,41 +550,10 @@ local treesitter_group = {
               ['@text.math'] = hi(nil, nil, 'italic', nil),
        ['@text.environment'] = hi(p.grey.dark1, p.grey.ghost, nil, nil),
               ['@text.note'] = hi(p.cyan.dark1, nil, nil, nil),
-           ['@text.warning'] = 'WarningMsg',
-            ['@text.danger'] = 'Error',
+           ['@text.warning'] = inline_warn,
+            ['@text.danger'] = inline_error,
 
-
-                ['@markup.strong'] = nyi,
-                ['@markup.italic'] = nyi,
-         ['@markup.strikethrough'] = nyi,
-             ['@markup.underline'] = nyi,
-                 
-               ['@markup.heading'] = nyi,
-             ['@markup.heading.1'] = nyi,
-             ['@markup.heading.2'] = nyi,
-             ['@markup.heading.3'] = nyi,
-             ['@markup.heading.4'] = nyi,
-             ['@markup.heading.5'] = nyi,
-             ['@markup.heading.6'] = nyi,
-                 
-                 ['@markup.quote'] = nyi,
-                  ['@markup.math'] = nyi,
-                 
-                  ['@markup.link'] = nyi,
-            ['@markup.link.label'] = nyi,
-              ['@markup.link.url'] = nyi,
-                 
-                   ['@markup.raw'] = nyi,
-             ['@markup.raw.block'] = nyi,
-                 
-                  ['@markup.list'] = nyi,
-          ['@markup.list.checked'] = nyi,
-        ['@markup.list.unchecked'] = nyi,
-                 
-                    ['@diff.plus'] = diffaddsign,
-                   ['@diff.minus'] = diffdeletesign,
-                   ['@diff.delta'] = diffchangesign,
-                 
+['@spell'] = hi(nil, nil, nil, nil) 
 }
 
 local scheme_group = {
@@ -458,7 +597,7 @@ local scheme_group = {
 
 -- ================== VIM Syntax =========================
 
-         Comment = hi(p.orange.light, nil, 'italic', nil),
+         Comment = syn_comment,
 
         Constant = hi(p.green.dark2, nil, nil, nil),
           String = literal_string,
@@ -522,49 +661,7 @@ local scheme_group = {
            ['@text.warning'] = 'WarningMsg',
             ['@text.danger'] = 'Error',
   
-                 ['@string'] = hi(fg.syn_literal2, nil, nil, nil),
-          ['@string.escape'] = hi(fg.syn_literal1, nil, "bold", nil),
-         ['@string.special'] = hi(fg.syn_literal1, nil, "bold", nil),
-              ['@character'] = hi(fg.syn_literal1, nil, nil, nil),
-      ['@character.special'] = hi(fg.syn_literal1, nil, "bold", nil),
-                 ['@number'] = hi(fg.syn_literal1, nil, nil, nil),
-                ['@boolean'] = hi(fg.syn_literal1, nil, nil, nil),
-                  ['@float'] = hi(fg.syn_literal1, nil, nil, nil), 
-
-                 ['@method'] = hi(fg.syn_function1, nil, nil, nil),
-            ['@method.call'] = hi(fg.syn_function1, nil, nil, nil),
-               ['@function'] = hi(fg.syn_function1, nil, nil, nil),
-          ['@function.call'] = hi(fg.syn_function1, nil, nil, nil),
-       ['@function.builtin'] = hi(fg.syn_function2, nil, nil, nil),
-
-
-               ['@variable'] = hi(fg.syn_variable1, nil, nil, nil),
-       ['@variable.builtin'] = hi(fg.syn_variable2, nil, nil, nil), 
-              ['@parameter'] = hi(fg.syn_variable1, bg.syn_variable, nil, nil),
-
-    ['@parameter.reference'] = hi(fg.syn_variable1, bg.syn_variable, nil, nil), 
-                  ['@field'] = hi(fg.syn_variable1, nil, nil, nil),
-               ['@property'] = hi(fg.syn_variable1, nil, nil, nil),
-
-                   ['@type'] = hi(fg.syn_type1, nil, nil, nil),
-        ['@type.definition'] = hi(fg.syn_type1, nil, nil, nil),
-         ['@type.qualifier'] = hi(fg.syn_type1, nil, nil, nil),
-           ['@type.builtin'] = hi(fg.syn_type2, nil, nil, nil), 
-           ['@storageclass'] = hi(fg.syn_type1, nil, nil, nil),
-              ['@structure'] = hi(fg.syn_type1, nil, nil, nil),
-            ['@constructor'] = hi(fg.syn_type1, nil, nil, nil),
-
-                ['@include'] = hi(fg.syn_preproc1, bg.syn_preproc, nil, nil),
-                ['@preproc'] = hi(fg.syn_preproc1, bg.syn_preproc, nil, nil),
-                 ['@define'] = hi(fg.syn_preproc1, bg.syn_preproc, nil, nil),
-         ['@constant.macro'] = hi(fg.syn_preproc1, nil, nil, nil),
-         ['@function.macro'] = hi(fg.syn_preproc1, nil, nil, nil),
-                  ['@macro'] = hi(fg.syn_preproc1, nil, nil, nil),
-
-             ['@annotation'] = hi(fg.syn_metadata, bg.syn_metadata, 'bold', nil),
-              ['@attribute'] = hi(fg.syn_metadata, bg.syn_metadata, 'bold', nil),
       
-                   ['@todo'] =  hi(fg.syn_todo, bg.syn_todo, 'bold', nil),
                    --]]
 }
 
