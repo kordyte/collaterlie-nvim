@@ -280,142 +280,6 @@ local lsp_group = {
 
 local treesitter_group = {
 
-@asm
-@async
-@attribute
-@attribute.builtin
-@auto
-@autoreleasepool
-@available
-@base
-@cast
-@character       
-@character.special
-@charset
-@code
-@conceal
-@constant
-@constant.boolean
-@constant.builtin
-@constant.macro
-@debug 
-@define
-@definition
-@definition.associated
-@definition.constant
-@definition.enum
-@definition.field 
-@definition.function
-@definition.import
-@definition.label
-@definition.macro
-@definition.method
-@definition.namespace
-@definition.parameter
-@definition.type
-@definition.var
-@definition.variable 
-@deprecated
-@diagnostic
-@dynamic
-@each
-@end
-@endcode
-@entry
-@enum"
-@error
-@exception 
-@extend
-@field
-@fini
-@float
-@forward
-@func-name
-@func-name
-@function 
-@function.builtin
-@function.call
-@function.macro 
-@function.method
-@function.spec
-@generic
-@identifier
-@implementation
-@import
-@include
-@indent.auto
-@indent.begin
-@indent.branch
-@indent.dedent
-@indent.end
-@init
-@injection.content
-@injection.language
-@keyframes
-@language
-@lateinit
-@load
-@local.reference
-@media
-@meta
-@none
-@operator              ; symbolic operators (e.g. `+` / `*`)
-@optional
-@packed
-@perl
-@perl
-@prefix
-@preproc               ; various preprocessor directives & shebangs
-@python
-@reference
-@scope
-@see
-@selector
-@source
-@spell
-@storageclass
-@storageclass.lifetime
-@string
-@string.documentation
-@string.escape
-@string.escape
-@string.grammar
-@string.special
-@string.special.grammar
-@string.special.path
-@supports
-@symbol
-@synchronized
-@synthesize
-@tag
-@tag.attribute
-@test
-@text
-@text.danger
-@text.diff.add
-@text.diff.delete
-@text.emphasis
-@text.environment
-@text.environment.name
-@text.literal
-@text.literal
-@text.math
-@text.note
-@text.quote
-@text.reference
-@text.strike
-@text.strong
-@text.underline
-@text.uri
-@text.warning
-@theme
-@type
-@type.builtin
-@type.definition
-@type.qualifier
-@vararg
-@version
-@warn
 
                       ['@boolean'] = syn_literal1,
                        ['@number'] = syn_literal1,
@@ -427,12 +291,14 @@ local treesitter_group = {
          ['@string.documentation'] = syn_literal1, -- Strings like Python doc strings
                ['@string.special'] = syn_literal2, -- special strings such as dates
         ['@string.special.symbol'] = syn_literal3, -- Atoms and symbols
+                       ['@symbol'] = syn_literal3, -- Atoms and symbols
            ['@string.special.url'] = hi('#192ce2', nil, nil, nil),
           ['@string.special.path'] = hi('#192ce2', nil, nil, nil),
                 ['@string.regexp'] = syn_literal1,
                     ['@character'] = syn_literal1,
             ['@character.special'] = hi(syn_literal1.fg, nil, 'bold', nil),
 
+                   ['@identifier'] = syn_variable1,
                      ['@variable'] = syn_variable1,
              ['@variable.builtin'] = syn_variable2,
                ['@variable.array'] = syn_variable1,
@@ -446,6 +312,7 @@ local treesitter_group = {
                      ['@property'] = syn_variable2,
 
                      ['@constant'] = syn_constant1,
+             ['@constant.boolean'] = syn_constant1,
              ['@constant.builtin'] = syn_constant2,
                ['@constant.macro'] = syn_macro1,
 
@@ -455,11 +322,10 @@ local treesitter_group = {
                ['@type.qualifier'] = syn_type2, 
                  ['@type.builtin'] = syn_type2, 
                     ['@structure'] = syn_type1,
-                    ['@interface'] = hi(syn_type1.fg, nil, 'italic', nil),
                         ['@mixin'] = hi(syn_type1.fg, nil, 'italic', nil),
-                     ['@protocol'] = hi(syn_type1.fg, nil, 'italic', nil),
                   ['@constructor'] = syn_type1,
                  ['@storageclass'] = syn_type2,
+                 ['@storageclass.lifetime'] = syn_type2,
 
                     ['@namespace'] = syn_module1,
                        ['@module'] = syn_module1,
@@ -488,13 +354,15 @@ local treesitter_group = {
                 ['@keyword.debug'] = hi(syn_keyword2.fg, syn_keyword2.bg, 'bold', nil),
             ['@keyword.exception'] = syn_keyword1,
                     ['@exception'] = syn_keyword1,
-                          ['@try'] = syn_keyword1,
-                        ['@catch'] = syn_keyword1,
-                        ['@throw'] = syn_keyword1,
-                      ['@finally'] = syn_keyword1,
-                       ['@public'] = syn_keyword1,
-                    ['@protected'] = syn_keyword1,
-                      ['@private'] = syn_keyword1,
+                 ['@synchronized'] = syn_keyword1,
+                          ['@asm'] = syn_keyword1,
+                        ['@async'] = syn_keyword1,
+                         ['@auto'] = syn_keyword1,
+                         ['@base'] = syn_keyword1,
+                         ['@cast'] = syn_keyword1,
+                         ['@each'] = syn_keyword1,
+                         ['@code'] = syn_keyword1,
+                         ['@enum'] = syn_keyword1,
                ['@keyword.phaser'] = syn_keyword1,
           ['@keyword.conditional'] = syn_keyword1,
                   ['@conditional'] = syn_keyword1,
@@ -502,25 +370,29 @@ local treesitter_group = {
                         ['@label'] = hi(syn_keyword2.fg, syn_keyword2.bg, 'bold', nil),
             ['@keyword.directive'] = syn_keyword2,
      ['@keyword.directive.define'] = syn_keyword2,
+     ['@define'] = nyi,
 
                      ['@function'] = syn_function1,
              ['@function.builtin'] = syn_function3,
                 ['@function.call'] = syn_function1,
               ['@function.method'] = syn_function2,
-                       ['@method'] = syn_function2, -- NTSCG
+                       ['@method'] = syn_function2,
+                ['@function.spec'] = syn_function2,
          ['@function.method.call'] = syn_function2,
-                  ['@method.call'] = syn_function2, -- NTSCG
+                  ['@method.call'] = syn_function2,
       ['@function.method.builtin'] = syn_function3,
-               ['@method.builtin'] = syn_function3, -- NTSCG
+               ['@method.builtin'] = syn_function3,
                ['@function.macro'] = syn_macro1,
-                        ['@macro'] = syn_macro1, -- NTSCG
+                        ['@macro'] = syn_macro1,
 
                    ['@annotation'] = syn_metadata1,
                     ['@attribute'] = syn_metadata1,
             ['@attribute.builtin'] = syn_metadata1,
                     ['@nodiscard'] = syn_metadata1,
-                     ['@noreturn'] = syn_metadata1
-                     ['@overload'] = syn_metadata1
+                     ['@noreturn'] = syn_metadata1,
+                     ['@overload'] = syn_metadata1,
+                         ['@test'] = syn_metadata1,
+                   ['@deprecated'] = syn_metadata1,
 
                       ['@comment'] = syn_comment,
         ['@comment.documentation'] = syn_comment,
@@ -532,6 +404,7 @@ local treesitter_group = {
                 ['@tag.attribute'] = syn_variable1,
                 ['@tag.delimiter'] = syn_punctuation,
 
+               ['@text'] = nyi,
              ['@text.title'] = syn_text_title,
              ['@text.title.1'] = nyi,
              ['@text.title.2'] = nyi,
@@ -552,8 +425,41 @@ local treesitter_group = {
               ['@text.note'] = hi(p.cyan.dark1, nil, nil, nil),
            ['@text.warning'] = inline_warn,
             ['@text.danger'] = inline_error,
+             ['@text.quote'] = nyi,
+             ['@text.environment.name'] = nyi,
+             ['@text.diff.delete'] = nyi,
+             ['@text.diff.add'] = nyi,
 
-['@spell'] = hi(nil, nil, nil, nil) 
+                  ['@spell'] = hi(nil, nil, nil, nil),
+['@python'] = nyi,
+['@preproc'] = nyi, --               various preprocessor directives & shebangs
+['@func-name'] = nyi, --              
+['@entry'] = nyi, --              
+['@include'] = nyi, --              
+['@injection.content'] = nyi, --              
+['@injection.language'] = nyi, --              
+['@none'] = nyi, --              
+['@debug'] = nyi, --              
+['@conceal'] = nyi, --              
+['@scope'] = nyi, --              
+['@reference'] = nyi, --  
+
+['@definition'] = nyi,
+['@definition.associated'] = nyi,
+['@definition.constant'] = nyi,
+['@definition.enum'] = nyi,
+['@definition.field '] = nyi,
+['@definition.function'] = nyi,
+['@definition.import'] = nyi,
+['@definition.label'] = nyi,
+['@definition.macro'] = nyi,
+['@definition.method'] = nyi,
+['@definition.namespace'] = nyi,
+['@definition.parameter'] = nyi,
+['@definition.type'] = nyi,
+['@definition.var'] = nyi,
+['@definition.variable '] = nyi,
+            
 }
 
 local scheme_group = {
