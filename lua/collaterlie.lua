@@ -214,32 +214,41 @@ local telescope_group = {
 -- LSP only provides type and mod, the typemod is a Neovim thing to allow
 -- you to do specific things for a combination
 
+-- Greens
 syn_literal1 = hi('#0f801e', nil, nil, nil)
+syn_literal1b = hi('#0f801e', nil, 'bold', nil) -- The 'b' is not for bold, it's just 'b'. It's the same colour, but with some other effect
 syn_literal2 = hi('#08440f', nil, nil, nil)
-syn_literal3 = hi(syn_literal1.fg, '#defbe1', nil, nil) 
+syn_literal2b = hi('#08440f', nil, 'bold', nil)
+syn_literal3 = hi('#619220', nil, nil, nil) 
+syn_literal3b = hi('#619220', nil, 'italic', nil) 
 
+
+-- Purples
 syn_variable1 = hi('#410745', nil, nil, nil) 
+syn_variable1b = hi('#410745', nil, 'italic', nil) 
 syn_variable2 = hi('#780f81', nil, nil, nil)
-syn_variable3 = hi('#410745', '#fffaff', nil, nil)
+syn_variable3 = hi('#3e0a66', nil, nil, nil)
 
-syn_constant1 = hi('#08440f', nil, nil, nil) 
-syn_constant2 = hi('#0f801e', nil, nil, nil)
-
+-- Teals
 syn_type1 = hi('#117980', nil, nil, nil)
 syn_type2 = hi('#093e43', nil, nil, nil)
-syn_type3 = hi('#117980', '#f6fefe', nil, nil)
+syn_type3 = hi('#085e5a', nil, nil, nil)
 
 syn_module1 = hi('#08440f', nil, nil, nil)
 
-syn_keyword1 = hi('#070e44', '#fafaff', nil, nil)
-syn_keyword2 = hi('#0e187f', '#fffdfa', nil, nil)
-syn_keyword3 = hi(syn_keyword1.fg, syn_keyword1.bg, nil, nil)
+-- Dark blues
+syn_keyword1 = hi('#070e44', nil, nil, nil)
+syn_keyword2 = hi('#0e187f', nil, nil, nil)
+syn_keyword3 = hi('#1620b1', nil, nil, nil)
+syn_keyword3x = hi(syn_keyword1.fg, syn_keyword1.bg, nil, nil)
 syn_keyword4 = hi(syn_keyword2.fg, syn_keyword2.bg, nil, nil)
 
+-- Browns
 syn_function1 = hi('#432b04', nil, nil, nil)
-syn_function2 = hi('#533b04', nil, nil, nil)
+syn_function2 = hi('#583e04', nil, nil, nil)
 syn_function3 = hi('#7f5107', nil, nil, nil)
 
+-- Reds
 syn_macro1 = hi('#801010', nil, nil, nil)
 syn_macro2 = hi('#801010', '#fffafa', nil, nil)
 
@@ -248,11 +257,17 @@ syn_metadata1 = hi('#818181', '#fffafa', 'bold', nil)
 syn_comment = hi('#e9c865', nil, 'italic', nil)
 syn_comment_special = hi('#7f5107', '#fcfb9d', 'bold,italic', nil)
 
+syn_path = hi('#192ce2', nil, nil, nil)
+syn_uri = hi('#192ce2', nil, 'underline', '#a1a9f5')
 syn_modifier1 = nyi
 
 syn_text_title = hi('#101010', nil, 'underline', nil)
 
 local lsp_group = {
+         ['@lsp.type.string'] = syn_literal2,
+         ['@lsp.type.number'] = syn_literal1,
+     ['@lsp.type.enumMember'] = syn_literal3,
+         ['@lsp.type.regexp'] = syn_literal3b,
       ['@lsp.type.namespace'] = syn_namespace,
            ['@lsp.type.type'] = syn_type1, 
           ['@lsp.type.class'] = syn_type1,
@@ -263,7 +278,6 @@ local lsp_group = {
       ['@lsp.type.parameter'] = syn_variable3,
        ['@lsp.type.variable'] = syn_variable1,
        ['@lsp.type.property'] = syn_variable2,
-     ['@lsp.type.enumMember'] = syn_type2,
           ['@lsp.type.event'] = syn_type2,
        ['@lsp.type.function'] = syn_function1,
          ['@lsp.type.method'] = syn_function2,
@@ -271,48 +285,43 @@ local lsp_group = {
         ['@lsp.type.keyword'] = syn_keyword1,
        ['@lsp.type.modifier'] = nyi,
         ['@lsp.type.comment'] = nyi,
-         ['@lsp.type.string'] = syn_literal2,
-         ['@lsp.type.number'] = syn_literal1,
-         ['@lsp.type.regexp'] = syn_literal1,
        ['@lsp.type.operator'] = hi('#0e187f', nil, nil, nil),
       ['@lsp.type.decorator'] = syn_metadata1,
 }
 
 local treesitter_group = {
-
-
                       ['@boolean'] = syn_literal1,
                        ['@number'] = syn_literal1,
-               ['@number.builtin'] = syn_literal2,
-               ['@number.special'] = syn_literal2,
+               ['@number.builtin'] = syn_literal3,
+               ['@number.special'] = syn_literal3,
                         ['@float'] = syn_literal1,
                        ['@string'] = syn_literal2,
-                ['@string.escape'] = hi(syn_literal1.fg, nil, 'bold', nil),  -- escape sequences
-         ['@string.documentation'] = syn_literal1, -- Strings like Python doc strings
-               ['@string.special'] = syn_literal2, -- special strings such as dates
-               ['@string.special.symbol'] = nyi, --  N
-               ['@string.special.path'] = nyi, --  N
-               ['@string.special.url'] = nyi, --  N
-                       ['@symbol'] = syn_literal3, -- Atoms and symbols
-          ['@string.special.path'] = hi('#192ce2', nil, nil, nil),
-                ['@string.regexp'] = syn_literal1,
+                ['@string.escape'] = syn_literal1b,  -- escape sequences
+         ['@string.documentation'] = syn_literal3, -- Strings like Python doc strings
+               ['@string.special'] = syn_literal3, -- special strings such as dates
+        ['@string.special.symbol'] = syn_literal3b, -- Atoms and symbols 
+                       ['@symbol'] = syn_literal3b, -- Atoms and symbols
+          ['@string.special.path'] = syn_path, --  N
+           ['@string.special.url'] = syn_uri, --  N
+                ['@string.regexp'] = syn_literal3b,
+
                     ['@character'] = syn_literal1,
-            ['@character.special'] = hi(syn_literal1.fg, nil, 'bold', nil),
+            ['@character.special'] = syn_literal2b,
 
                      ['@variable'] = syn_variable1,
-             ['@variable.builtin'] = syn_variable2,
-             ['@variable.parameter'] = nyi, -- N
-             ['@variable.member'] = nyi, -- N
+           ['@variable.parameter'] = syn_variable2, -- N
+                    ['@parameter'] = syn_variable2,
+             ['@variable.builtin'] = syn_variable1b,
+              ['@variable.member'] = syn_variable3, -- N
+                        ['@field'] = syn_variable3,
+                     ['@property'] = syn_variable3,
                ['@variable.array'] = syn_variable1, -- Perl
                 ['@variable.hash'] = syn_variable1, -- Perl
                ['@variable.local'] = syn_variable1, 
               ['@variable.scalar'] = syn_variable1, -- Perl
-                    ['@parameter'] = syn_variable3,
-                        ['@field'] = syn_variable2,
-                     ['@property'] = syn_variable2,
 
-                     ['@constant'] = syn_constant1,
-             ['@constant.builtin'] = syn_constant2,
+                     ['@constant'] = syn_literal1,
+             ['@constant.builtin'] = syn_literal2,
                ['@constant.macro'] = syn_macro1,
 
                          ['@type'] = syn_type1,
@@ -394,7 +403,7 @@ local treesitter_group = {
            ['@text.literal'] = syn_literal1,
            ['@text.literal.block'] = syn_literal1,
          ['@text.reference'] = hi(fg.syn_text_reference, nil, nil, nil),
-               ['@text.uri'] = hi(fg.syn_text_uri, p.blue.ghost, nil, nil),
+               ['@text.uri'] = syn_uri,
          ['@text.underline'] = hi(nil, nil, 'underline', nil),
               ['@text.todo'] = '@todo',
           ['@text.emphasis'] = hi(nil, nil, 'italic', nil),
