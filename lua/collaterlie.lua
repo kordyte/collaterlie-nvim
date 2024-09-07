@@ -59,6 +59,8 @@ inline_ok = hi('#0f801e', nil, nil, nil)
 diffaddsign = hi('#0f801e', '#defbe1', nil, nil) 
 diffdeletesign = hi('#801010', '#fddddd', nil, nil)
 diffchangesign = hi('#780f81', '#f9defc', nil, nil)
+diffaddtext = hi(nil, '#a2f5ad', nil, nil) 
+diffdeletetext = hi(nil, '#f4a3a3', nil, nil)
 diffchangetext = hi(nil, '#f9defc', undercurl, '#780f81')
 
 -- For help with the highlight groups, see: https://github.com/casr/vim-colors-reference
@@ -214,34 +216,42 @@ local telescope_group = {
 -- LSP only provides type and mod, the typemod is a Neovim thing to allow
 -- you to do specific things for a combination
 
+-- Colours might be marked with an 'x', 'y', or 'z'. This is the
+-- same colour but with some other formatting change, e.g. bold,
+-- italic, underline, or a different background colour.
+
 -- Greens
 syn_literal1 = hi('#0f801e', nil, nil, nil)
-syn_literal1b = hi('#0f801e', nil, 'bold', nil) -- The 'b' is not for bold, it's just 'b'. It's the same colour, but with some other effect
+syn_literal1x = hi('#0f801e', nil, 'bold', nil) -- The 'b' is not for bold, it's just 'b'. It's the same colour, but with some other effect
 syn_literal2 = hi('#08440f', nil, nil, nil)
-syn_literal2b = hi('#08440f', nil, 'bold', nil)
+syn_literal2x = hi('#08440f', nil, 'bold', nil)
 syn_literal3 = hi('#619220', nil, nil, nil) 
-syn_literal3b = hi('#619220', nil, 'italic', nil) 
-
+syn_literal3x = hi('#619220', nil, 'italic', nil) 
 
 -- Purples
 syn_variable1 = hi('#410745', nil, nil, nil) 
-syn_variable1b = hi('#410745', nil, 'italic', nil) 
+syn_variable1x = hi('#410745', nil, 'italic', nil) 
 syn_variable2 = hi('#780f81', nil, nil, nil)
 syn_variable3 = hi('#3e0a66', nil, nil, nil)
 
 -- Teals
 syn_type1 = hi('#117980', nil, nil, nil)
+syn_type1x = hi('#117980', nil, 'italic', nil)
 syn_type2 = hi('#093e43', nil, nil, nil)
+syn_type2x = hi('#093e43', nil, 'italic', nil)
 syn_type3 = hi('#085e5a', nil, nil, nil)
+syn_type3x = hi('#085e5a', nil, 'italic', nil)
 
-syn_module1 = hi('#08440f', nil, nil, nil)
+-- Olive 
+syn_namespace1 = hi('#616520', nil, nil, nil)
 
 -- Dark blues
 syn_keyword1 = hi('#070e44', nil, nil, nil)
+syn_keyword1x = hi('#070e44', nil, 'bold', nil)
 syn_keyword2 = hi('#0e187f', nil, nil, nil)
+syn_keyword2x = hi('#0e187f', nil, 'bold', nil)
 syn_keyword3 = hi('#1620b1', nil, nil, nil)
-syn_keyword3x = hi(syn_keyword1.fg, syn_keyword1.bg, nil, nil)
-syn_keyword4 = hi(syn_keyword2.fg, syn_keyword2.bg, nil, nil)
+syn_keyword3x = hi('#1620b1', nil, 'bold', nil)
 
 -- Browns
 syn_function1 = hi('#432b04', nil, nil, nil)
@@ -249,232 +259,223 @@ syn_function2 = hi('#583e04', nil, nil, nil)
 syn_function3 = hi('#7f5107', nil, nil, nil)
 
 -- Reds
-syn_macro1 = hi('#801010', nil, nil, nil)
-syn_macro2 = hi('#801010', '#fffafa', nil, nil)
+syn_preproc1 = hi('#801010', nil, nil, nil)
+syn_preproc2 = hi('#9a3713', nil, nil, nil)
 
-syn_metadata1 = hi('#818181', '#fffafa', 'bold', nil)
+-- Greys
+syn_metadata1 = hi('#909090', nil, nil, nil)
+syn_metadata1x = hi('#909090', '#fffafa', 'bold', nil)
 
+-- Oranges
 syn_comment = hi('#e9c865', nil, 'italic', nil)
 syn_comment_special = hi('#7f5107', '#fcfb9d', 'bold,italic', nil)
 
+syn_punctuation = hi(normal.fg, nil, nil, nil)
+syn_punctuation_special = hi('#0e187f', nil, nil, nil)
+syn_operator = hi(normal.fg, nil, nil, nil)
+syn_delimiter = hi(normal.fg, nil, nil, nil)
+syn_bracket = hi('#780f81', nil, nil, nil)
+
+syn_deprecated = hi(nil, nil, 'strikethrough', nil)
+
 syn_path = hi('#192ce2', nil, nil, nil)
 syn_uri = hi('#192ce2', nil, 'underline', '#a1a9f5')
-syn_modifier1 = nyi
 
-syn_text_title = hi('#101010', nil, 'underline', nil)
+syn_text_title = hi('#101010', nil, 'underline', '#101010')
+syn_text_title1 = hi('#101010', nil, 'bold,underline', '#101010')
+syn_text_title2 = hi('#101010', nil, 'bold,underline', '#303030')
+syn_text_title3 = hi('#202020', nil, 'bold,underline', '#404040')
+syn_text_title4 = hi('#202020', nil, 'underline', '#404040')
+syn_text_title5 = hi('#303030', nil, 'underline', '#606060')
+syn_text_title5 = hi('#404040', nil, 'underline', '#808080')
+syn_text_strong = hi(nil, nil, 'bold', nil)
+syn_text_italic = hi(nil, nil, 'italic', nil)
+syn_text_strikethrough = hi(nil, nil, 'strikethrough', nil)
+syn_text_underline = hi(nil, nil, 'underline', nil)
+syn_text_link = hi('#192ce2', nil, nil, nil)
+syn_text_raw = hi('#ededed', nil, nil, nil)
 
 local lsp_group = {
-         ['@lsp.type.string'] = syn_literal2,
          ['@lsp.type.number'] = syn_literal1,
+         ['@lsp.type.string'] = syn_literal2,
      ['@lsp.type.enumMember'] = syn_literal3,
-         ['@lsp.type.regexp'] = syn_literal3b,
-      ['@lsp.type.namespace'] = syn_namespace,
+         ['@lsp.type.regexp'] = syn_literal3x,
+      ['@lsp.type.namespace'] = syn_namespace1,
            ['@lsp.type.type'] = syn_type1, 
           ['@lsp.type.class'] = syn_type1,
            ['@lsp.type.enum'] = syn_type1,
-      ['@lsp.type.interface'] = hi(syn_type1.fg, nil, 'italic', nil),
          ['@lsp.type.struct'] = syn_type1,
-  ['@lsp.type.typeParameter'] = syn_type3,
-      ['@lsp.type.parameter'] = syn_variable3,
+          ['@lsp.type.event'] = syn_type1,
+      ['@lsp.type.interface'] = syn_type1x,
+  ['@lsp.type.typeParameter'] = syn_type2x,
+       ['@lsp.type.modifier'] = syn_type3x,
        ['@lsp.type.variable'] = syn_variable1,
        ['@lsp.type.property'] = syn_variable2,
-          ['@lsp.type.event'] = syn_type2,
+      ['@lsp.type.parameter'] = syn_variable3,
        ['@lsp.type.function'] = syn_function1,
          ['@lsp.type.method'] = syn_function2,
-          ['@lsp.type.macro'] = syn_macro1,
+          ['@lsp.type.macro'] = syn_preproc1,
         ['@lsp.type.keyword'] = syn_keyword1,
-       ['@lsp.type.modifier'] = nyi,
-        ['@lsp.type.comment'] = nyi,
-       ['@lsp.type.operator'] = hi('#0e187f', nil, nil, nil),
+        ['@lsp.type.comment'] = syn_comment,
+       ['@lsp.type.operator'] = syn_operator,
       ['@lsp.type.decorator'] = syn_metadata1,
+
+       ['@lsp.mod.deprecated'] = syn_deprecated
 }
 
 local treesitter_group = {
-                      ['@boolean'] = syn_literal1,
-                       ['@number'] = syn_literal1,
-               ['@number.builtin'] = syn_literal3,
-               ['@number.special'] = syn_literal3,
-                        ['@float'] = syn_literal1,
-                       ['@string'] = syn_literal2,
-                ['@string.escape'] = syn_literal1b,  -- escape sequences
-         ['@string.documentation'] = syn_literal3, -- Strings like Python doc strings
-               ['@string.special'] = syn_literal3, -- special strings such as dates
-        ['@string.special.symbol'] = syn_literal3b, -- Atoms and symbols 
-                       ['@symbol'] = syn_literal3b, -- Atoms and symbols
-          ['@string.special.path'] = syn_path, --  N
-           ['@string.special.url'] = syn_uri, --  N
-                ['@string.regexp'] = syn_literal3b,
+                ['@boolean'] = syn_literal1,
+                 ['@number'] = syn_literal1,
+         ['@number.builtin'] = syn_literal3,
+         ['@number.special'] = syn_literal3,
+                  ['@float'] = syn_literal1,
+                 ['@string'] = syn_literal2,
+          ['@string.escape'] = syn_literal1x,
+   ['@string.documentation'] = syn_literal3,
+         ['@string.special'] = syn_literal3,
+          ['@string.regexp'] = syn_literal3x,
+  ['@string.special.symbol'] = syn_literal3x, -- Atoms and symbols 
+                 ['@symbol'] = syn_literal3x, -- Atoms and symbols
+    ['@string.special.path'] = syn_path,
+     ['@string.special.url'] = syn_uri,
 
-                    ['@character'] = syn_literal1,
-            ['@character.special'] = syn_literal2b,
+              ['@character'] = syn_literal1,
+      ['@character.special'] = syn_literal1x,
 
-                     ['@variable'] = syn_variable1,
-           ['@variable.parameter'] = syn_variable2, -- N
-                    ['@parameter'] = syn_variable2,
-             ['@variable.builtin'] = syn_variable1b,
-              ['@variable.member'] = syn_variable3, -- N
-                        ['@field'] = syn_variable3,
-                     ['@property'] = syn_variable3,
-               ['@variable.array'] = syn_variable1, -- Perl
-                ['@variable.hash'] = syn_variable1, -- Perl
-               ['@variable.local'] = syn_variable1, 
-              ['@variable.scalar'] = syn_variable1, -- Perl
+               ['@variable'] = syn_variable1,
+     ['@variable.parameter'] = syn_variable2,
+              ['@parameter'] = syn_variable2,
+       ['@variable.builtin'] = syn_variable1x,
+        ['@variable.member'] = syn_variable3,
+                  ['@field'] = syn_variable3,
+               ['@property'] = syn_variable3,
+                  ['@entry'] = syn_variable3,              
+         ['@variable.local'] = syn_variable1, 
+        ['@variable.scalar'] = syn_variable1, -- Perl
+         ['@variable.array'] = syn_variable2, -- Perl
+          ['@variable.hash'] = syn_variable3, -- Perl
 
-                     ['@constant'] = syn_literal1,
-             ['@constant.builtin'] = syn_literal2,
-               ['@constant.macro'] = syn_macro1,
+               ['@constant'] = syn_literal1,
+       ['@constant.builtin'] = syn_literal2,
+         ['@constant.macro'] = syn_preproc2,
 
-                         ['@type'] = syn_type1,
-              ['@type.definition'] = syn_type1,
-               ['@type.qualifier'] = syn_type2, 
-                 ['@type.builtin'] = syn_type2, 
-                  ['@constructor'] = syn_type1,
-                 ['@storageclass'] = syn_type2,
-                 ['@storageclass.lifetime'] = syn_type2,
+                   ['@type'] = syn_type1,
+        ['@type.definition'] = syn_type1,
+            ['@constructor'] = syn_type1,
+           ['@type.builtin'] = syn_type2, 
+         ['@type.qualifier'] = syn_type3x, 
+           ['@storageclass'] = syn_type3x,
+  ['@storageclass.lifetime'] = syn_type3x,
+       
+              ['@namespace'] = syn_namespace1,
 
-                    ['@namespace'] = syn_module1,
-                    ['@module'] = nyi, -- N
-                    ['@module.builtin'] = nyi, -- N
+               ['@operator'] = syn_operator, 
+            ['@punctuation'] = syn_punctuation,
+  ['@punctuation.delimiter'] = syn_delimiter,
+    ['@punctuation.bracket'] = syn_bracket,
+    ['@punctuation.special'] = syn_punctuation_special,
 
-                  ['@punctuation'] = normal,
-        ['@punctuation.delimiter'] = normal,
-          ['@punctuation.bracket'] = hi('#780f81', nil, nil, nil),
-          ['@punctuation.special'] = hi('#0e187f', nil, nil, nil),
-                     ['@operator'] = hi('#0e187f', nil, nil, nil), -- operators expressed as symbols, e.g. + 
+                ['@keyword'] = syn_keyword1,
+       ['@keyword.operator'] = syn_keyword1, -- named operators, e.g. and
+         ['@keyword.phaser'] = syn_keyword1, -- Perl
+                   ['@base'] = syn_keyword1,
+                   ['@code'] = syn_keyword1,
+           ['@keyword.type'] = syn_keyword1,
+         ['@keyword.repeat'] = syn_keyword2,
+                 ['@repeat'] = syn_keyword2,
+            ['@conditional'] = syn_keyword2,
+    ['@conditional.ternary'] = syn_keyword2,
+              ['@exception'] = syn_keyword2,
+                  ['@label'] = syn_keyword2x,
 
-                      ['@keyword'] = syn_keyword1,
-            ['@keyword.coroutine'] = syn_keyword4,
-             ['@keyword.function'] = syn_keyword3,
-             ['@keyword.operator'] = syn_keyword1, -- named operators, e.g. and
-               ['@keyword.import'] = nyi, -- N
-               ['@keyword.modifier'] = nyi, -- N
-               ['@keyword.debug'] = nyi, -- N
-               ['@keyword.directive'] = nyi, -- N
-               ['@keyword.define'] = nyi, -- N
-               ['@keyword.return'] = syn_keyword4,
-                 ['@keyword.type'] = syn_keyword1,
-               ['@keyword.repeat'] = syn_keyword1,
-                       ['@repeat'] = syn_keyword1,
-               ['@keyword.exception'] = nyi, -- N
-                    ['@exception'] = syn_keyword1,
-                          ['@asm'] = syn_keyword1,
-                         ['@base'] = syn_keyword1,
-                         ['@code'] = syn_keyword1,
-               ['@keyword.phaser'] = syn_keyword1, -- Perl
-                  ['@conditional'] = syn_keyword1,
-                  ['@keyword.conditional'] = syn_keyword1,
-  ['keyword.@conditional.ternary'] = syn_keyword1,
-                        ['@label'] = hi(syn_keyword2.fg, syn_keyword2.bg, 'bold', nil),
-     ['@define'] = nyi,
+               ['@function'] = syn_function1,
+          ['@function.call'] = syn_function1,
+        ['@function.method'] = syn_function2,
+   ['@function.method.call'] = syn_function2,
+                 ['@method'] = syn_function2,
+            ['@method.call'] = syn_function2,
+          ['@function.spec'] = syn_function2,
+              ['@func-name'] = syn_function2,              
+       ['@function.builtin'] = syn_function3,
+         ['@function.macro'] = syn_preproc2,
 
-                     ['@function'] = syn_function1,
-             ['@function.builtin'] = syn_function3,
-                ['@function.call'] = syn_function1,
-              ['@function.method'] = syn_function2,
-              ['@function.method.call'] = syn_function2,
-                       ['@method'] = syn_function2,
-                ['@function.spec'] = syn_function2,
-                  ['@method.call'] = syn_function2,
-               ['@function.macro'] = syn_macro1,
+                ['@preproc'] = syn_preproc1, 
+                 ['@define'] = syn_preproc1, 
+                ['@include'] = syn_preproc1,              
 
-                    ['@attribute'] = syn_metadata1,
-            ['@attribute.builtin'] = syn_metadata1,
+              ['@attribute'] = syn_metadata1x,
+      ['@attribute.builtin'] = syn_metadata1x,
 
-                      ['@comment'] = syn_comment,
-        ['@comment.documentation'] = syn_comment,
-        ['@comment.error'] = nyi, -- N
-        ['@comment.warning'] = nyi, -- N
-        ['@comment.todo'] = nyi, -- N
-        ['@comment.note'] = nyi, -- N
+                ['@comment'] = syn_comment,
+  ['@comment.documentation'] = syn_comment,
+          ['@comment.error'] = inline_error,
+        ['@comment.warning'] = inline_warn,
+           ['@comment.todo'] = syn_comment_special, 
+           ['@comment.note'] = syn_comment,
 
-                          ['@tag'] = syn_type1,
-                  ['@tag.builtin'] = syn_type2,
-                ['@tag.attribute'] = syn_variable1,
-                ['@tag.delimiter'] = syn_punctuation,
+                    ['@tag'] = syn_type1,
+            ['@tag.builtin'] = syn_type2,
+          ['@tag.attribute'] = syn_variable1,
+          ['@tag.delimiter'] = syn_punctuation,
 
-               ['@text'] = nyi,
+              ['@diff.plus'] = diffaddtext,
+             ['@diff.minus'] = diffdeletetext,
+             ['@diff.delta'] = diffchangetext,
+
+                   ['@text'] = hi(nil, nil, nil, nil), 
              ['@text.title'] = syn_text_title,
-             ['@text.title.1'] = nyi,
-             ['@text.title.2'] = nyi,
-             ['@text.title.3'] = nyi,
-             ['@text.title.4'] = nyi,
-             ['@text.title.5'] = nyi,
-             ['@text.title.6'] = nyi,
+           ['@text.title.1'] = syn_text_title1,
+           ['@text.title.2'] = syn_text_title2,
+           ['@text.title.3'] = syn_text_title3,
+           ['@text.title.4'] = syn_text_title4,
+           ['@text.title.5'] = syn_text_title5,
+           ['@text.title.6'] = syn_text_title6,
            ['@text.literal'] = syn_literal1,
-           ['@text.literal.block'] = syn_literal1,
-         ['@text.reference'] = hi(fg.syn_text_reference, nil, nil, nil),
+     ['@text.literal.block'] = syn_literal2,
+         ['@text.reference'] = syn_text_link,
                ['@text.uri'] = syn_uri,
-         ['@text.underline'] = hi(nil, nil, 'underline', nil),
-              ['@text.todo'] = '@todo',
-          ['@text.emphasis'] = hi(nil, nil, 'italic', nil),
-            ['@text.strong'] = hi(nil, nil, 'bold', nil),
-            ['@text.strike'] = hi(nil, nil, 'strikethrough', nil),
-              ['@text.math'] = hi(nil, nil, 'italic', nil),
-       ['@text.environment'] = hi(p.grey.dark1, p.grey.ghost, nil, nil),
-              ['@text.note'] = hi(p.cyan.dark1, nil, nil, nil),
+         ['@text.underline'] = syn_text_underline,
+              ['@text.todo'] = syn_comment_special,
+          ['@text.emphasis'] = syn_text_italic,
+            ['@text.strong'] = syn_text_strong,
+            ['@text.strike'] = syn_text_strikethrough,
+              ['@text.math'] = syn_text_italic,
+       ['@text.environment'] = syn_text,
+  ['@text.environment.name'] = syn_text,
+              ['@text.note'] = syn_comment_special,
            ['@text.warning'] = inline_warn,
             ['@text.danger'] = inline_error,
-             ['@text.quote'] = nyi,
-             ['@text.environment.name'] = nyi,
-             ['@text.diff.delete'] = nyi,
-             ['@text.diff.add'] = nyi,
+             ['@text.quote'] = syn_text_italic,
+       ['@text.diff.delete'] = diffdeletetext,
+          ['@text.diff.add'] = diffaddtext,
 
 
-['@markup.strong'] = nyi, --          bold text
-['@markup.italic'] = nyi, --          italic text
-['@markup.strikethrough'] = nyi, --   struck-through text
-['@markup.underline'] = nyi, --       underlined text (only for literal underline markup!)
-['@markup.heading'] = nyi, --         headings, titles (including markers)
-['@markup.heading.1'] = nyi, --       top-level heading
-['@markup.heading.2'] = nyi, --       section heading
-['@markup.heading.3'] = nyi, --       subsection heading
-['@markup.heading.4'] = nyi, --       and so on
-['@markup.heading.5'] = nyi, --       and so forth
-['@markup.heading.6'] = nyi, --       six levels ought to be enough for anybody
-['@markup.quote'] = nyi, --           block quotes
-['@markup.math'] = nyi, --            math environments (e.g. $ ... $ in LaTeX)
-['@markup.link'] = nyi, --            text references, footnotes, citations, etc.
-['@markup.link.label'] = nyi, --      link, reference descriptions
-['@markup.link.url'] = nyi, --        URL-style links
-['@markup.raw'] = nyi, --             literal or verbatim text (e.g. inline code)
-['@markup.raw.block'] = nyi, --       literal or verbatim text as a stand-alone block
-['@markup.list'] = nyi, --            list markers
-['@markup.list.checked'] = nyi, --    checked todo-style list markers
-['@markup.list.unchecked'] = nyi, --
-['@diff.plus'] = nyi, --              added text (for diff files)
-['@diff.minus'] = nyi, --            deleted text (for diff files)
-['@diff.delta'] = nyi, --            changed text (for diff files)
+         ['@markup.heading'] = syn_text, 
+       ['@markup.heading.1'] = syn_text_title1, 
+       ['@markup.heading.2'] = syn_text_title2,
+       ['@markup.heading.3'] = syn_text_title3,
+       ['@markup.heading.4'] = syn_text_title4,
+       ['@markup.heading.5'] = syn_text_title5,
+       ['@markup.heading.6'] = syn_text_title6,
+          ['@markup.strong'] = syn_text_strong,
+          ['@markup.italic'] = syn_text_italic,
+   ['@markup.strikethrough'] = syn_text_strikethrough,
+       ['@markup.underline'] = syn_text_underline,
+            ['@markup.math'] = syn_text_italic,
+           ['@markup.quote'] = syn_text_italic,
+            ['@markup.link'] = syn_text_link,
+      ['@markup.link.label'] = syn_text_link,
+        ['@markup.link.url'] = syn_uri,
+             ['@markup.raw'] = syn_text_raw,
+       ['@markup.raw.block'] = syn_text_raw,
+            ['@markup.list'] = syn_text_bold,
+    ['@markup.list.checked'] = syn_text_bold,
+  ['@markup.list.unchecked'] = syn_text_bold,
 
-                  ['@spell'] = hi(nil, nil, nil, nil),
-['@python'] = nyi,
-['@preproc'] = nyi, --               various preprocessor directives & shebangs
-['@func-name'] = nyi, --              
-['@entry'] = nyi, --              
-['@include'] = nyi, --              
-['@injection.content'] = nyi, --              
-['@injection.language'] = nyi, --              
 ['@none'] = nyi, --              
 ['@debug'] = nyi, --              
 ['@conceal'] = nyi, --              
-['@scope'] = nyi, --              
-['@reference'] = nyi, --  
-
-['@definition'] = nyi,
-['@definition.associated'] = nyi,
-['@definition.constant'] = nyi,
-['@definition.enum'] = nyi,
-['@definition.field '] = nyi,
-['@definition.function'] = nyi,
-['@definition.import'] = nyi,
-['@definition.label'] = nyi,
-['@definition.macro'] = nyi,
-['@definition.method'] = nyi,
-['@definition.namespace'] = nyi,
-['@definition.parameter'] = nyi,
-['@definition.type'] = nyi,
-['@definition.var'] = nyi,
-['@definition.variable '] = nyi,
-            
+            --      ['@spell'] = hi(nil, nil, nil, nil),
 }
 
 local scheme_group = {
