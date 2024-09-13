@@ -29,6 +29,6 @@ return {
   inactive = {
     a = { fg = p.grey.pale, gui = 'bold', bg = p.grey.dark1 },
     b = { fg = p.grey.dark2, bg = p.grey.pale },
-    c = { fg = p.grey.pale, bg = p.grey.vibrant },
+    c = { fg = '#432b04', bg = '#f0e2d8' },
   }
 }

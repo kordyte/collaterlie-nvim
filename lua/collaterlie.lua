@@ -248,6 +248,7 @@ syn_namespace1 = hi('#616520', nil, nil, nil)
 -- Dark blues
 syn_keyword1 = hi('#070e44', nil, nil, nil)
 syn_keyword1x = hi('#070e44', nil, 'bold', nil)
+syn_keyword1y = hi('#070e44', nil, 'italic', nil)
 syn_keyword2 = hi('#0e187f', nil, nil, nil)
 syn_keyword2x = hi('#0e187f', nil, 'bold', nil)
 syn_keyword3 = hi('#1620b1', nil, nil, nil)
@@ -255,8 +256,11 @@ syn_keyword3x = hi('#1620b1', nil, 'bold', nil)
 
 -- Browns
 syn_function1 = hi('#432b04', nil, nil, nil)
+syn_function1x = hi('#432b04', nil, 'bold', nil)
 syn_function2 = hi('#583e04', nil, nil, nil)
+syn_function2x = hi('#583e04', nil, 'bold', nil)
 syn_function3 = hi('#7f5107', nil, nil, nil)
+syn_function3x = hi('#7f5107', nil, 'bold', nil)
 
 -- Reds
 syn_preproc1 = hi('#801010', nil, nil, nil)
@@ -295,7 +299,54 @@ syn_text_underline = hi(nil, nil, 'underline', nil)
 syn_text_link = hi('#192ce2', nil, nil, nil)
 syn_text_raw = hi('#ededed', nil, nil, nil)
 
-local lsp_group = {
+local syntax_group = {
+         Comment = syn_comment,
+
+        Constant = syn_literal1,
+          String = syn_literal2,
+       Character = syn_literal1,
+          Number = syn_literal1,
+         Boolean = syn_literal1,
+           Float = syn_literal1,
+
+      Identifier = syn_variable1,
+        Function = syn_function1,
+
+       Statement = normal,
+     Conditional = syn_keyword2, 
+          Repeat = syn_keyword2,
+           Label = syn_keyword2x,
+        Operator = syn_operator,
+         Keyword = syn_keyword1,
+       Exception = syn_keyword2, 
+
+         PreProc = syn_preproc1,
+         Include = syn_preproc1,
+          Define = syn_preproc1,
+           Macro = syn_preproc2,
+       PreCondit = syn_preproc1, 
+
+            Type = syn_type1,
+    StorageClass = syn_type3x,
+       Structure = syn_type1,
+         Typedef = syn_type1,
+
+         Special = syn_literal2x,
+     SpecialChar = syn_literal1x,
+   
+       Delimiter = syn_delimiter,
+  SpecialComment = syn_comment,
+           Debug = hi(p.orange.dark1, nil, 'bold', nil),            -- Debugging statements
+
+      Underlined = syn_text_underline,
+
+          Ignore = hi(nil, nil, nil, nil),
+
+           Error = inline_error,
+            Todo = syn_comment_special
+}
+
+local lsp_syntax_group = {
          ['@lsp.type.number'] = syn_literal1,
          ['@lsp.type.string'] = syn_literal2,
      ['@lsp.type.enumMember'] = syn_literal3,
@@ -323,7 +374,7 @@ local lsp_group = {
        ['@lsp.mod.deprecated'] = syn_deprecated
 }
 
-local treesitter_group = {
+local treesitter_syntax_group = {
                 ['@boolean'] = syn_literal1,
                  ['@number'] = syn_literal1,
          ['@number.builtin'] = syn_literal3,
@@ -472,119 +523,47 @@ local treesitter_group = {
     ['@markup.list.checked'] = syn_text_bold,
   ['@markup.list.unchecked'] = syn_text_bold,
 
-['@none'] = nyi, --              
-['@debug'] = nyi, --              
-['@conceal'] = nyi, --              
-            --      ['@spell'] = hi(nil, nil, nil, nil),
+                -- ['@none']
+               -- ['@debug']
+             -- ['@conceal']
 }
 
-local scheme_group = {
+local dap_group = {
+                      DapSign = hi('#f1990e', gutter.bg, nil, nil),
+              DapRejectedSign = hi('#efa4f6', gutter.bg, nil, nil),
+               DapStoppedSign = hi('#f1990e', '#fcfb9d', nil, nil),
+                   
+                   DapUIScope = gutter,
+              DapUIDecoration = normal, 
 
--- ================== DAP =========================
-
-                      DapSign = hi(p.orange.vibrant, p.grey.pale, nil, nil),
-              DapRejectedSign = hi(p.red.vibrant, p.purple.pale, nil, nil),
-               DapStoppedSign = hi(p.grey.black, p.orange.vibrant, nil, nil),
-
-                DapUIVariable = '@variable', 
-                   DapUIScope = hi(p.fg, nil, nil, nil),
-                    DapUIType = '@type',
-                   DapUIValue = hi(p.green.dark2, nil, nil, nil), 
-           DapUIModifiedValue = hi(p.green.dark2, p.chartreuse.light, nil, nil), 
-              DapUIDecoration = hi(p.grey.vibrant, nil, nil, nil), 
-                  DapUIThread = hi(p.red.dark1, nil, nil, nil),
-           DapUIStoppedThread = hi(p.orange.dark1, p.orange.pale, nil, nil),
-               DapUIFrameName = hi(p.orange.dark1, nil, nil, nil),
-                  DapUISource = hi(p.blue.dark1, p.blue.ghost, nil, nil),
+                DapUIVariable = syn_variable1, 
+                    DapUIType = syn_type1,
+                   DapUIValue = syn_literal1, 
+           DapUIModifiedValue = hi(syn_literal1.fg, highlighted.bg, nil, nil), 
+                  DapUIThread = syn_function1,
+           DapUIStoppedThread = syn_function1x,
+               DapUIFrameName = syn_function2, 
+        DapUICurrentFrameName = syn_function3x,
+                  DapUISource = syn_path,
               DapUILineNumber = 'LineNr', 
-             DapUIFloatNormal = hi(nil, p.grey.ghost, nil, nil),
-             DapUIFloatBorder = hi(p.grey.vibrant, p.grey.ghost, nil, nil),
-            DapUIWatchesEmpty = hi(p.blue.pale, nil, nil, nil),
-            DapUIWatchesValue = hi(p.red.dark1, nil, nil, nil),
-            DapUIWatchesError = hi(p.yellow.light, p.red.vibrant, nil, nil),
-         DapUIBreakpointsPath = 'DapUISource',
-         DapUIBreakpointsInfo = hi(p.grey.dark1, p.grey.pale, nil, nil),
-  DapUIBreakpointsCurrentLine = hi(p.blue.dark1, p.orange.light, nil, nil),
+             DapUIFloatNormal = dialog,
+             DapUIFloatBorder = dialogborder,
+            DapUIWatchesEmpty = syn_keyword1y,
+            DapUIWatchesValue = normal,
+            DapUIWatchesError = alert_error,
+         DapUIBreakpointsPath = syn_path,
+         DapUIBreakpointsInfo = syn_keyword1y,
+  DapUIBreakpointsCurrentLine = selected,
          DapUIBreakpointsLine = 'DapUILineNumber',
-  DapUIBreakpointsDisableLine = hi(p.yellow.vibrant, nil, nil, nil),
-        DapUICurrentFrameName = hi(p.orange.vibrant, nil, nil, nil),
-                DapUIStepOver = hi(p.orange.vibrant, nil, nil, nil),
-                DapUIStepInto = hi(p.orange.vibrant, nil, nil, nil),
-                DapUIStepBack = hi(p.grey.light, nil, nil, nil),
-                 DapUIStepOut = hi(p.orange.vibrant, nil, nil, nil),
-                    DapUIStop = hi(p.red.vibrant, nil, nil, nil, nil),
-               DapUIPlayPause = hi(p.green.vibrant, nil, nil, nil), 
-                 DapUIRestart = hi(p.green.vibrant, nil, nil, nil),
-             DapUIUnavailable = hi(p.grey.light, nil, nil, nil),
-
--- ================== VIM Syntax =========================
-
-         Comment = syn_comment,
-
-        Constant = hi(p.green.dark2, nil, nil, nil),
-          String = literal_string,
-       Character = literal_character,
-          Number = literal_number,
-         Boolean = literal_boolean,
-           Float = literal_float,
-
-      Identifier = hi(p.purple.dark2, nil, nil, nil),
-        Function = hi(p.orange.dark1, nil, nil, nil),
-
-       Statement = hi(p.fg, nil, nil, nil),
-     Conditional = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-          Repeat = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-           Label = hi(p.blue.dark1, p.orange.ghost, 'bold', nil),
-        Operator = hi(p.blue.dark1, nil, nil, nil),
-         Keyword = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-       Exception = hi(p.blue.dark2, p.blue.ghost, nil, nil),
-
-         PreProc = hi(p.red.dark1, p.red.ghost, nil, nil),
-         Include = hi(p.red.dark1, p.red.ghost, nil, nil),
-          Define = hi(p.red.dark1, p.red.ghost, nil, nil),
-           Macro = hi(p.red.dark1, p.red.ghost, nil, nil),
-       PreCondit = hi(p.red.dark1, p.red.ghost, nil, nil),
-
-            Type = hi(p.cyan.dark1, nil, nil, nil),
-    StorageClass = hi(p.cyan.dark1, nil, nil, nil),
-       Structure = hi(p.cyan.dark1, nil, nil, nil),
-         Typedef = hi(p.cyan.dark1, nil, nil, nil),
-
-         Special = hi(p.blue.dark1, nil, nil, nil),
-     SpecialChar = hi(p.green.dark1, nil, 'bold', nil),
-   
-       Delimiter = hi(p.fg, nil, nil, nil),
-  SpecialComment = hi(p.orange.light, nil, 'bold', nil),
-           Debug = hi(p.orange.dark1, nil, 'bold', nil),            -- Debugging statements
-
-      Underlined = hi(nil, nil, 'underline', nil),
-
-          Ignore = hi(nil, nil, nil, nil),
-
-           Error = hi(p.red.vibrant, p.red.pale, 'bold,underline', nil),  -- any erroneous construct
-            Todo = hi(p.orange.dark1, p.yellow.light, 'bold', nil),
-
-    -- Treesitter  ===============================================================================
-
- --[[               ['@comment'] = hi(fg.syn_comment, nil, 'italic', nil), 
-   XX 
-             ['@text.title'] = hi(fg.syn_text_title, p.green.ghost),
-           ['@text.literal'] = hi(fg.syn_text_literal, p.purple.ghost),
-         ['@text.reference'] = hi(fg.syn_text_reference, nil, nil, nil),
-               ['@text.uri'] = hi(fg.syn_text_uri, p.blue.ghost, nil, nil),
-         ['@text.underline'] = hi(nil, nil, 'underline', nil),
-              ['@text.todo'] = '@todo',
-          ['@text.emphasis'] = hi(nil, p.orange.ghost, 'italic', nil),
-            ['@text.strong'] = hi(nil, p.orange.light, 'bold', nil),
-            ['@text.strike'] = hi(nil, nil, 'strikethrough', nil),
-              ['@text.math'] = hi(nil, nil, 'italic', nil),
-       ['@text.environment'] = hi(p.grey.dark1, p.grey.ghost, nil, nil),
-              ['@text.note'] = hi(p.cyan.dark1, nil, nil, nil),
-           ['@text.warning'] = 'WarningMsg',
-            ['@text.danger'] = 'Error',
-  
-      
-                   --]]
+  DapUIBreakpointsDisableLine = hi('#fcfb9d', nil, nil, nil),
+                DapUIStepOver = hi('#f1990e', nil, nil, nil),
+                DapUIStepInto = hi('#f1990e', nil, nil, nil),
+                DapUIStepBack = hi('#d319e2', nil, nil, nil),
+                 DapUIStepOut = hi('#f1990e', nil, nil, nil),
+                    DapUIStop = hi('#e31c1c', nil, nil, nil, nil),
+               DapUIPlayPause = hi('#19e233', nil, nil, nil), 
+                 DapUIRestart = hi('#19e233', nil, nil, nil),
+             DapUIUnavailable = hi('#cdcdcd', nil, nil, nil),
 }
 
 local function highlight(group, style)
@@ -620,11 +599,12 @@ M.colorscheme = function()
   vim.o.background = 'light'
   vim.o.termguicolors = true
   apply_set(ui_group)
-  apply_set(scheme_group)
   apply_set(diagnostic_group)
   apply_set(telescope_group)
-  apply_set(lsp_group)
-  apply_set(treesitter_group)
+  apply_set(syntax_group)
+  apply_set(lsp_syntax_group)
+  apply_set(treesitter_syntax_group)
+  apply_set(dap_group)
 --  for group, style in pairs(scheme) do
  --   if (type(style) == 'string') then
   --    link(group, style)
