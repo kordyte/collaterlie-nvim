@@ -1,4 +1,4 @@
-local p = require('collaterlie_palette')
+-- local p = require('collaterlie_palette')
 
 local function hi(fg, bg, special, specialcol)
   local o = { fg = fg, bg = bg, special = special, specialcol = specialcol }
@@ -6,42 +6,20 @@ local function hi(fg, bg, special, specialcol)
   return o
 end
 
-local fg = {
-  syn_literal1 = '#0f801e',
-  syn_literal2 = '#08440f',
-  syn_function1 = '#432b04',
-  syn_function2 = '#7f5107',
-  syn_variable1 = '#410745',
-  syn_variable2 = '#780f81',
-  syn_preproc1 = '#801010',
-  syn_namespace = '#08440f',
-  syn_metadata = '#818181',
-  syn_todo = '#7f5107',
-  syn_type1 = '#117980',
-  syn_type2 = '#093e43',
-  syn_keyword1 = '#070e44',
-  syn_keyword2 = '#0e187f',
-  syn_comment = '#e9c865',
-  syn_text_title = '#0f801e',
-  syn_text_literal = '#780f81',
-  syn_text_reference = '#0e187f',
-  syn_text_uri = '#070e44',
-}
-
-local bg = {
-  syn_variable = '#fffaff', -- The background might only be applied for some highlights 
-  syn_preproc = '#fffafa',
-  syn_metadata = '#fffafa',
-  syn_todo = '#fcfb9d',
-  syn_keyword1 = '#fafaff',
-  syn_keyword2 = '#fffdfa',
-}
-
 nyi = hi('#000000', '#ff2233', 'bold,undercurl', '#00ff00') -- Not Yet Implemented
 
 normal = hi('#432b04', '#fefefd', nil, nil) -- Default text in edit area
 gutter = hi(normal.fg, '#f9f8f5', nil, nil) -- numbering, gitsigns, and others inside the edit area
-external = hi('#801010', '#ebeae7', nil, nil) -- Outside the edit area: tabline, EndOfBuffer
+external = hi('#801010', '#f7f3ee', nil, nil) -- Outside the edit area: tabline, EndOfBuffer
+status_inactive = hi(normal.fg, '#f0e2d8', nil, nil)
+status = hi('#fdfdfc', '#7f5107', nil, nil) -- Irrelevant if using something like lualine
+
+-- normal, gutter, external, and statuses are chosen to work together
+-- gutter is a slight change from normal
+-- external is slight further away 'in the same direction'
+-- status_inactive is slightly further again.
+-- status is chosen to be complementary but can stand out
+
 dialog = hi(normal.fg, '#fbf9e8', nil, nil)
 dialogborder = hi('#7f5107', dialog.bg, nil, nil)
 selected = hi('#484848', '#fefe50', nil, nil)
@@ -72,7 +50,7 @@ local ui_group = {
 
           Cursor = hi('#000000', '#f1990e', nil, nil), -- for the cursor highlights to work, 
          nCursor = hi('#000000', '#f1990e', nil, nil), -- the highlight group will need to be set for
-         vCursor = hi('#000000', '#7f5107', nil, nil),   -- the cursor, e.g.
+         vCursor = hi('#000000', '#fefe50', nil, nil),   -- the cursor, e.g.
          iCursor = hi('#000000', '#192ce2', nil, nil),   -- set guicursor=n:block-nCursor
          rCursor = hi('#fddddd', '#e31c1c', nil, nil), 
          cCursor = hi('#000000', '#d319e2', nil, nil),
@@ -86,8 +64,8 @@ local ui_group = {
       SignColumn = hi(nil, gutter.bg, nil, nil),
   CursorLineSign = hi(nil, '#fee8b8', nil, nil), 
 
-      StatusLine = hi('#fdfdfc', '#7f5107', nil, nil), -- Irrelevant if using something like lualine
-    StatusLineNC = hi(normal.fg, '#f0e2d8', nil, nil),
+      StatusLine = status, 
+    StatusLineNC = status_inactive,
 
          MsgArea = gutter,
 
@@ -111,8 +89,9 @@ local ui_group = {
       Whitespace = hi('#070e44', nil, nil, nil),
       SpecialKey = hi('#0f801e', nil, nil, nil), 
 
-          Visual = hi(nil, '#fef0dc', nil, nil),
+          Visual = hi(nil, '#fef8d0', nil, nil),
        VisualNOS = hi(nil, '#ededed', nil, nil),  -- for when window does not have focus (X11 only)
+       VisualNC = hi(nil, '#ededed', nil, nil),  -- for when window does not have focus (X11 only)
 
          Conceal = hi('#818181', nil, nil, nil), 
 
@@ -336,7 +315,7 @@ local syntax_group = {
    
        Delimiter = syn_delimiter,
   SpecialComment = syn_comment,
-           Debug = hi(p.orange.dark1, nil, 'bold', nil),            -- Debugging statements
+           Debug = hi('#7f5107', nil, 'bold', nil),            -- Debugging statements
 
       Underlined = syn_text_underline,
 
