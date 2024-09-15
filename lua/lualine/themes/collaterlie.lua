@@ -1,34 +1,40 @@
-local p = require('collaterlie_palette')
+-- lualine theme to complement collaterlie colorscheme
+
+local common = {
+  b = { fg = '#560707', bg = '#fddddd' },
+  c = { fg = '#f0e2d8', bg = '#9f7130' },
+  inactive = { fg = '#9f7130', bg = '#f0e2d8' }
+}
 
 return {
   normal = {
-    a = { fg = p.orange.dark2, bg = p.orange.vibrant },
-    b = { fg = p.red.dark2, bg = p.red.pale },
-    c = { fg = p.bg, bg =  p.orange.dark1 },
+    a = { fg = '#7f5107', bg = '#f2a820' },
+    b = common.b,
+    c = common.c,
   },
   insert = {
-    a = { fg = p.red.pale, bg = p.blue.dark2 },
-    b = { fg = p.red.dark2, bg = p.red.pale },
-    c = { fg = p.bg, bg =  p.orange.dark1 },
+    a = { fg = '#fddddd', bg = '#192ce2' },
+    b = common.b,
+    c = common.c,
   },
   visual = {
-    a = { fg = p.orange.vibrant, bg = p.orange.dark2 },
-    b = { fg = p.red.dark2, bg = p.red.pale },
-    c = { fg = p.bg, bg =  p.orange.dark1 },
+    a = { fg = '#444444', bg = '#fef040' },
+    b = common.b,
+    c = common.c,
   },
   replace = {
-    a = { fg = p.red.pale, bg = p.red.vibrant },
-    b = { fg = p.red.dark2, bg = p.red.pale },
-    c = { fg = p.bg, bg =  p.orange.dark1 },
+    a = { fg = '#fdddddd', bg = '#e31c1c' },
+    b = common.b,
+    c = common.c,
   },
   command = {
-    a = { fg = p.purple.pale, bg = p.purple.vibrant },
-    b = { fg = p.red.dark2, bg = p.red.pale },
-    c = { fg = p.bg, bg =  p.orange.dark1 },
+    a = { fg = '#f9defc', bg = '#d319e2' },
+    b = common.b,
+    c = common.c,
   },
   inactive = {
-    a = { fg = p.grey.pale, gui = 'bold', bg = p.grey.dark1 },
-    b = { fg = p.grey.dark2, bg = p.grey.pale },
-    c = { fg = '#432b04', bg = '#f0e2d8' },
+    a = common.inactive,
+    b = common.inactive,
+    c = common.inactive,
   }
 }
