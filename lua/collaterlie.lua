@@ -205,7 +205,8 @@ local ui_group = {
     WinSeparator = hi('#7f5107', '#f9f9f5', nil, nil),
        VertSplit = 'WinSeparator',
           
-          WinBar = hi(nil, common.gutter.bg, nil, nil),
+         -- WinBar = hi(nil, common.gutter.bg, nil, nil),
+          WinBar = hi(nil, '#ff0000', nil, nil),
         WinBarNC = hi(nil, nil, nil, nil),
 
          Tabline = hi(common.external.fg, common.external.bg, 'italic', nil),
