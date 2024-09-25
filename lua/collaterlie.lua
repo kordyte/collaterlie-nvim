@@ -163,6 +163,26 @@ local syntax = {
              text_raw = hi('#ededed', nil, nil, nil),
 }
 
+local terminal_colours = {
+  -- These are used to set the g:terminal_color_X variables.
+  '#000000',  -- Black
+  '#e31c1c',  -- Red
+  '#19e233',  -- Green
+  '#f0f005',  -- Yellow
+  '#192ce2',  -- Blue
+  '#d319e2',  -- Magenta
+  '#1fe0ed',  -- Cyan (bright)
+  '#fdfdfc',  -- White
+  '#444444',  -- Black (bright)
+  '#ff1c1f',  -- Red (bright)
+  '#19ff33',  -- Green (bright)
+  '#ffff05',  -- Yellow (bright)
+  '#192cff',  -- Blue (bright)
+  '#e319f0',  -- Magenta (bright)
+  '#1ff0fd',  -- Cyan (bright)
+  '#ffffff'   -- White (bright)
+}
+
 
 -- ======================================================================================
 --
@@ -626,6 +646,12 @@ local function apply_group(set)
   end
 end
 
+local function apply_terminal_colours(tcols)
+  for i=1,16 do
+    vim.cmd('let ' .. 'terminal_color_' .. (i - 1) .. ' = \'' .. tcols[i] .. '\'')
+  end
+end
+
 M.colorscheme = function()
   vim.cmd('hi clear')
   if (vim.fn.exists('syntax_on')) then
@@ -640,6 +666,8 @@ M.colorscheme = function()
   apply_group(lsp_syntax_group)
   apply_group(treesitter_syntax_group)
   apply_group(dap_group)
+
+  apply_terminal_colours(terminal_colours)
 end
 
 
